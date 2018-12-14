@@ -2,6 +2,7 @@ package com.wwwxy.employeemanagement.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -19,12 +20,12 @@ public class JDBCUtil {
         return con;
 
     }
-	public void close(Connection con,Statement st,ResultSet rs) throws SQLException{
+	public void close(Connection con,PreparedStatement ps,ResultSet rs) throws SQLException{
 		if(rs != null){
 			rs.close();
 		}
-		if(st != null){
-			st.close();
+		if(ps != null){
+			ps.close();
 		}
 		if(con != null){
 			con.close();
