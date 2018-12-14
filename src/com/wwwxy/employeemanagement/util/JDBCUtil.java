@@ -19,7 +19,7 @@ public class JDBCUtil {
         return con;
 
     }
-	public void close(Connection con,PreparedStatement ps ps,ResultSet rs) throws SQLException{
+	public void close(Connection con,PreparedStatement ps,ResultSet rs) throws SQLException{
 		if(rs != null){
 			rs.close();
 		}
