@@ -1,54 +1,54 @@
 package com.wwwxy.employeemanagement.entity;
 
 public class LoginEntity {
-	//管理员，员工ID
-	private int Lid;
-	//管理员，员工姓名
-	private String Lusername;
-	//管理员，员工密码
-	private String Lpassword;
+	//管理员，员工工号
+	private int id;
 	//管理员，员工账号
-	private int Ladmin;
+	private String username;
+	//管理员，员工密码
+	private String password;
+	//管理员，员工
+	private int admin;
 	//属性的访问器
 	public int getId() {
-		return Lid;
+		return id;
 	}
 	public void setId(int id) {
-		this.Lid = id;
+		this.id = id;
 	}
 	public String getUsername() {
-		return Lusername;
+		return username;
 	}
 	public void setUsername(String username) {
-		this.Lusername = username;
+		this.username = username;
 	}
 	public String getPassword() {
-		return Lpassword;
+		return password;
 	}
 	public void setPassword(String password) {
-		this.Lpassword = password;
+		this.password = password;
 	}
 	public int getAdmin() {
-		return Ladmin;
+		return admin;
 	}
 	public void setAdmin(int admin) {
-		this.Ladmin = admin;
+		this.admin = admin;
 	}
 	public int getEmpid() {
-		return Lempid;
+		return empid;
 	}
 	public void setEmpid(int empid) {
-		this.Lempid = empid;
+		this.empid = empid;
 	}
 	//管理员，员工编号
-	private int Lempid;
+	private int empid;
 	public LoginEntity(int id, String username, String password, int admin, int empid) {
 		super();
-		this.Lid = id;
-		this.Lusername = username;
-		this.Lpassword = password;
-		this.Ladmin = admin;
-		this.Lempid = empid;
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.admin = admin;
+		this.empid = empid;
 	}
 	public LoginEntity() {
 		
