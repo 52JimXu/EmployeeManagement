@@ -12,7 +12,7 @@ public class JDBCUtil {
 	public Connection getConnection() {
         try {
         	Class.forName("com.mysql.jdbc.Driver");
-            con = 
+        	con = 
             DriverManager.getConnection("jdbc:mysql://jimxu.top:3306/wwwxy", "wwwxy", "1234");
         } catch (Exception e) {
             e.printStackTrace();
