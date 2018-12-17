@@ -6,9 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.ZipEntry;
 
-import com.wwwxy.*;
 import com.wwwxy.employeemanagement.entity.EmployeeEntity;
 import com.wwwxy.employeemanagement.util.JDBCUtil;
 
