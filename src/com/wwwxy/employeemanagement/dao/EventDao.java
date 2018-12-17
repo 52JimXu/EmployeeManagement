@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.wwwxy.employeemanagement.entity.EventEntity;
 import com.wwwxy.employeemanagement.util.JDBCUtil;
 
@@ -19,6 +18,42 @@ public class EventDao extends JDBCUtil {
 		String sql = "select * from event";
 		try {
 			ps = con.prepareStatement(sql);
+			rs = ps.executeQuery();
+			while(rs.next()){
+				EventEntity e = new EventEntity();
+				e.seteId(rs.getInt("eId"));
+				e.seteMpid(rs.getInt("eMpid"));
+				e.seteClocking(rs.getInt("eClocking"));
+				e.seteOvertime(rs.getInt("eOvertime"));
+				e.seteBigevent(rs.getString("eBigevent"));
+				e.seteAward(rs.getInt("eAward"));
+				list.add(e);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			try {
+				rs.close();
+				ps.close();
+				con.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return list;
+		
+	}
+	public List<EventEntity> getEventById(int id){
+		List<EventEntity> list = new ArrayList<EventEntity>();
+		Connection con = this.getConnection();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sql = "select * from event where eid = ?";
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, id);
 			rs = ps.executeQuery();
 			while(rs.next()){
 				EventEntity e = new EventEntity();
@@ -129,30 +164,41 @@ public class EventDao extends JDBCUtil {
 		return row;
 	}
 	//输入员工id查询事项
-	public List<EventEntity> getAllEventEntity(){
-		List<EventEntity> list = getAllEventEntity();
-		PreparedStatement ps = null;
+	public List<EventEntity> getAllEventEntity(int eMpid){
+		List<EventEntity> list1 = new ArrayList<EventEntity>();
 		Connection con = this.getConnection();
+		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sql = "select *from event where empid = ?";
+		String sql = "select * from event where empid = ?";
+		EventEntity t= new EventEntity();
 		try {
-			EventEntity t = new EventEntity();
 			ps = con.prepareStatement(sql);
-			ps.setInt(1,t.geteMpid());
+			ps.setInt(1, eMpid);
+			rs = ps.executeQuery();
 			while(rs.next()){
-				t.seteId(rs.getInt("eId"));
-				t.seteMpid(rs.getInt("eMpid"));
-				t.seteId(rs.getInt("eId"));
-				t.seteId(rs.getInt("eId"));
-				t.seteId(rs.getInt("eId"));
+				EventEntity e = new EventEntity();
+				e.seteId(rs.getInt("eId"));
+				e.seteMpid(rs.getInt("eMpid"));
+				e.seteClocking(rs.getInt("eClocking"));
+				e.seteOvertime(rs.getInt("eOvertime"));
+				e.seteBigevent(rs.getString("eBigevent"));
+				e.seteAward(rs.getInt("eAward"));
+				list1.add(e);
 			}
-			//ps.setInt(1, t.geteMpid());
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally{
+			try {
+				rs.close();
+				ps.close();
+				con.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		
-		return list;
+		return list1;
 		
 	}
 	
