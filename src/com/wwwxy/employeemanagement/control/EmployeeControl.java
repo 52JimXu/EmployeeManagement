@@ -17,19 +17,26 @@ public class EmployeeControl {
 		return ed.getEmployeeByName(EmpName);
 	}
 	//修改员工信息
-	public void updateEmployee(EmployeeEntity ee){
-		ed.updateEmployee(ee);
+	public boolean UpdateEmployee(EmployeeEntity ee){
+		ed.UpdateEmployee(ee);
+		boolean flag = true;
+		return flag;
 	}
 	//根据工号查询员工
 	public EmployeeEntity getEmployeeById(int EmpId){
 		return ed.getEmployeeById(EmpId);
 	}
 	//增加员工
-	public void AddEmployee(EmployeeEntity ee){
+	public boolean AddEmployee(EmployeeEntity ee){
 		ed.AddEmployee(ee);
+		boolean flag=true;
+		return flag;
 	}
 	//删除员工
-	public void DeleteEmployee(int EmpId){
+	public boolean DeleteEmployee(int EmpId){
 		ed.DeleteEmployee(EmpId);
+		boolean flag = true;
+		return flag;
+		
 	}
 }
