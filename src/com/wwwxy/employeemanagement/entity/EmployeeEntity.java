@@ -9,8 +9,8 @@ public class EmployeeEntity {
 	private String EmpName;
 	private String EmpSex;
 	private Integer EmpAge;
-	private Date EmpBirthday;
-	private Integer EmpBasic;
+	private String EmpBirthday;
+	private Float EmpBasic;
 	private String EmpEmail;
 	private String EmpAddress;
 	
@@ -21,7 +21,7 @@ public class EmployeeEntity {
 		// TODO Auto-generated constructor stub
 	}
 	public EmployeeEntity(Integer empId, String empName, String empSex,
-			Integer empAge, Date empBirthday, Integer empBasic,
+			Integer empAge, String empBirthday, Float empBasic,
 			String empEmail, String empAddress) {
 		super();
 		EmpId = empId;
@@ -57,16 +57,16 @@ public class EmployeeEntity {
 	public void setEmpAge(Integer empAge) {
 		EmpAge = empAge;
 	}
-	public Date getEmpBirthday() {
+	public String getEmpBirthday() {
 		return EmpBirthday;
 	}
-	public void setEmpBirthday(Date empBirthday) {
+	public void setEmpBirthday(String empBirthday) {
 		EmpBirthday = empBirthday;
 	}
-	public Integer getEmpBasic() {
+	public Float getEmpBasic() {
 		return EmpBasic;
 	}
-	public void setEmpBasic(Integer empBasic) {
+	public void setEmpBasic(Float empBasic) {
 		EmpBasic = empBasic;
 	}
 	public String getEmpEmail() {

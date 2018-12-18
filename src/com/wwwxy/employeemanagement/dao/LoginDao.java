@@ -33,7 +33,6 @@ public class LoginDao {
 				try {
 					jdbc.close(con, ps, rs);
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -52,11 +51,11 @@ public class LoginDao {
 				rs = ps.executeQuery();
 				while(rs.next()){
 					LoginEntity le = new LoginEntity();
-					le.setId(rs.getInt("Lid"));
-					le.setUsername(rs.getString("Lusername"));
-					le.setPassword(rs.getString("Lpassword"));
-					le.setAdmin(rs.getInt("Ladmin"));
-					le.setEmpid(rs.getInt("Lempid"));
+					le.setId(rs.getInt("id"));
+					le.setUsername(rs.getString("username"));
+					le.setPassword(rs.getString("password"));
+					le.setAdmin(rs.getInt("admin"));
+					le.setEmpid(rs.getInt("empid"));
 					list.add(le);
 				}
 			} catch (SQLException e) {
@@ -66,11 +65,138 @@ public class LoginDao {
 				try {
 					jdbc.close(con, ps, rs);
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
 			return list;
 		}
-		//员工，管理员输入姓名
+		//输入账号查询管理员和员工信息,模糊查询
+		public List<LoginEntity> getLoginByUsername(String username){
+			List<LoginEntity> list = new ArrayList<LoginEntity>();
+			JDBCUtil jdbc = new JDBCUtil();
+			Connection con = jdbc.getConnection();
+			PreparedStatement ps =null;
+			ResultSet rs = null;
+			String sql = "select * from login where username like ?";
+			try {
+				ps = con.prepareStatement(sql);
+				ps.setString(1, "%"+username+"%");
+				rs = ps.executeQuery();
+				while(rs.next()){
+					LoginEntity le = new LoginEntity();
+					le.setId(rs.getInt("id"));
+					le.setUsername(rs.getString("username"));
+					le.setPassword(rs.getString("password"));
+					le.setAdmin(rs.getInt("admin"));
+					le.setEmpid(rs.getInt("empid"));
+					list.add(le);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}finally{
+				try {
+					jdbc.close(con, ps, rs);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			return list;
+		}
+		//修改登录信息
+		public int updateLoginByEmpid(LoginEntity le){
+			int row = 0;
+			JDBCUtil jdbc = new JDBCUtil();
+			Connection con = jdbc.getConnection();
+			PreparedStatement ps = null;
+			String sql = "update login set password = 1234 where empid =?";
+			try {
+				ps = con.prepareStatement(sql);
+				ps.setString(1, le.getPassword());
+				ps.setInt(2, le.getEmpid());
+				row = ps.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}finally{
+				try {
+					jdbc.close(con, ps,null);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			return row;
+		}
+		//根据编号查找员工
+		public LoginEntity getLoginByEmpid(int empid){
+			LoginEntity le = new LoginEntity();
+			JDBCUtil jdbc = new JDBCUtil();
+			Connection con = jdbc.getConnection();
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+			String sql = "select * from login where empid=?";
+			try {
+				ps = con.prepareStatement(sql);
+				ps.setInt(1, empid);
+				rs = ps.executeQuery();
+				while(rs.next()){
+					le.setId(rs.getInt("id"));
+					le.setUsername(rs.getString("username"));
+					le.setAdmin(rs.getInt("admin"));
+					le.setEmpid(rs.getInt("empid"));
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}finally{
+				try {
+					jdbc.close(con, ps, rs);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			return le;
+		}
+		//新增登录信息
+		public int addLogin(LoginEntity le){
+			int row = 0;
+			JDBCUtil jdbc = new JDBCUtil();
+			Connection con = jdbc.getConnection();
+			PreparedStatement ps = null;
+			String sql = "insert into Login(username,empid) values(?,?)";
+			try {
+				ps = con.prepareStatement(sql);
+				ps.setString(1, le.getUsername());
+				ps.setInt(2, le.getEmpid());
+				row = ps.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}finally{
+				try {
+					jdbc.close(con, ps, null);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			return row;
+		}
+		//删除登录信息
+		public int delLoginByempId(int Lempid){
+			int row = 0;
+			JDBCUtil jdbc = new JDBCUtil();
+			Connection con = jdbc.getConnection();
+			PreparedStatement ps = null;
+			String sql = "delete from Login where empid=?";
+			try {
+				ps = con.prepareStatement(sql);
+				ps.setInt(1, Lempid);
+				row = ps.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}finally{
+				try {
+					jdbc.close(con, ps, null);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}	
+			return row;
+		}
 }

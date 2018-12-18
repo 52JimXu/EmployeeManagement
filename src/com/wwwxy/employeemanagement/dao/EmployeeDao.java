@@ -6,9 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.ZipEntry;
 
-import com.wwwxy.*;
 import com.wwwxy.employeemanagement.entity.EmployeeEntity;
 import com.wwwxy.employeemanagement.util.JDBCUtil;
 
@@ -27,10 +25,10 @@ public class EmployeeDao extends JDBCUtil{
 				EmployeeEntity ee = new EmployeeEntity();
 				ee.setEmpId(rs.getInt("empid"));
 				ee.setEmpName(rs.getString("empname"));
-				ee.setEmpSex(rs.getString("empage"));
+				ee.setEmpSex(rs.getString("empsex"));
 				ee.setEmpAge(rs.getInt("empage"));
-				ee.setEmpBirthday(rs.getDate("empbirthday"));
-				ee.setEmpBasic(rs.getInt("empbasic"));
+				ee.setEmpBirthday(rs.getString("empbirthday"));
+				ee.setEmpBasic(rs.getFloat("empbasic"));
 				ee.setEmpEmail(rs.getString("empemail"));
 				ee.setEmpAddress(rs.getString("empaddress"));
 				list.add(ee);
@@ -68,8 +66,8 @@ public class EmployeeDao extends JDBCUtil{
 				ee.setEmpName(rs.getString("empname"));
 				ee.setEmpSex(rs.getString("empage"));
 				ee.setEmpAge(rs.getInt("empage"));
-				ee.setEmpBirthday(rs.getDate("empbirthday"));
-				ee.setEmpBasic(rs.getInt("empbasic"));
+				ee.setEmpBirthday(rs.getString("empbirthday"));
+				ee.setEmpBasic(rs.getFloat("empbasic"));
 				ee.setEmpEmail(rs.getString("empemail"));
 				ee.setEmpAddress(rs.getString("empaddress"));
 				list.add(ee);
@@ -90,7 +88,7 @@ public class EmployeeDao extends JDBCUtil{
 		return list;
 	}
 	//修改员工信息
-	public void updateEmployee(EmployeeEntity ee){
+	public void UpdateEmployee(EmployeeEntity ee){
 		Connection con = getConnection();
 		PreparedStatement ps = null;
 		String sql = "update employee set empname=?,empsex=?,empage=?,empbirthday=?,empbasic=?,empemail=?,empaddress=? where empid=?";
@@ -99,8 +97,8 @@ public class EmployeeDao extends JDBCUtil{
 			ps.setString(1, ee.getEmpName());
 			ps.setString(2, ee.getEmpSex());
 			ps.setInt(3, ee.getEmpAge());
-			ps.setDate(4, ee.getEmpBirthday());
-			ps.setInt(5, ee.getEmpBasic());
+			ps.setString(4, ee.getEmpBirthday());
+			ps.setFloat(5, ee.getEmpBasic());
 			ps.setString(6, ee.getEmpEmail());
 			ps.setString(7, ee.getEmpAddress());
 			ps.setInt(8, ee.getEmpId());
@@ -135,8 +133,8 @@ public class EmployeeDao extends JDBCUtil{
 				ee.setEmpName(rs.getString("empname"));
 				ee.setEmpSex(rs.getString("empage"));
 				ee.setEmpAge(rs.getInt("empage"));
-				ee.setEmpBirthday(rs.getDate("empbirthday"));
-				ee.setEmpBasic(rs.getInt("empbasic"));
+				ee.setEmpBirthday(rs.getString("empbirthday"));
+				ee.setEmpBasic(rs.getFloat("empbasic"));
 				ee.setEmpEmail(rs.getString("empemail"));
 				ee.setEmpAddress(rs.getString("empaddress"));
 			}
@@ -165,8 +163,8 @@ public class EmployeeDao extends JDBCUtil{
 			ps.setString(1, ee.getEmpName());
 			ps.setString(2, ee.getEmpSex());
 			ps.setInt(3, ee.getEmpAge());
-			ps.setDate(4, ee.getEmpBirthday());
-			ps.setInt(5, ee.getEmpBasic());
+			ps.setString(4, ee.getEmpBirthday());
+			ps.setFloat(5, ee.getEmpBasic());
 			ps.setString(6, ee.getEmpEmail());
 			ps.setString(7, ee.getEmpAddress());
 			ps.executeUpdate();
@@ -187,7 +185,7 @@ public class EmployeeDao extends JDBCUtil{
 	public void DeleteEmployee(int EmpId){
 		Connection con = getConnection();
 		PreparedStatement ps = null;
-		String sql = "delete from employee where id=?";
+		String sql = "delete from employee where empid=?";
 		try {
 			ps = con.prepareStatement(sql);
 			ps.setInt(1, EmpId);
