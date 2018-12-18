@@ -5,6 +5,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.wwwxy.employeemanagement.control.CheckDetailsControl;
+import com.wwwxy.employeemanagement.entity.CheckDetails;
 import com.wwwxy.employeemanagement.entity.EventEntity;
 import com.wwwxy.employeemanagement.util.JDBCUtil;
 
@@ -45,15 +48,16 @@ public class EventDao extends JDBCUtil {
 		return list;
 		
 	}
-	public List<EventEntity> getEventById(int id){
+	//输入员工id查询该员工的事项
+	public List<EventEntity> getEventById(int eMpid){
 		List<EventEntity> list = new ArrayList<EventEntity>();
 		Connection con = this.getConnection();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sql = "select * from event where eid = ?";
+		String sql = "select * from event where empid = ?";
 		try {
 			ps = con.prepareStatement(sql);
-			ps.setInt(1, id);
+			ps.setInt(1, eMpid);
 			rs = ps.executeQuery();
 			while(rs.next()){
 				EventEntity e = new EventEntity();
@@ -82,18 +86,18 @@ public class EventDao extends JDBCUtil {
 		
 	}
 	//新增事项
-	public int addEventEntity(EventEntity t){
+	public int addEventEntity(EventEntity e){
 		int row = 0;
 		PreparedStatement ps = null;
 		Connection con = this.getConnection();
 		String sql = "insert into event(empid,eclocking,eovertime,ebigevent,eaward) values(?,?,?,?,?)";
 		try {
 			ps = con.prepareStatement(sql);
-			ps.setInt(1, t.geteMpid());
-			ps.setInt(2,t.geteClocking());
-			ps.setInt(3, t.geteOvertime());
-			ps.setString(4, t.geteBigevent());
-			ps.setInt(5, t.geteAward());
+			ps.setInt(1, e.geteMpid());
+			ps.setInt(2,e.geteClocking());
+			ps.setInt(3, e.geteOvertime());
+			ps.setString(4, e.geteBigevent());
+			ps.setInt(5, e.geteAward());
 			row = ps.executeUpdate();
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
@@ -109,35 +113,55 @@ public class EventDao extends JDBCUtil {
 		}
 		return row;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
 	//修改事项
-	public int updateEventEntityById(EventEntity t){
+	public int updateEventEntityById(EventEntity e){
 		int row = 0;
 		PreparedStatement ps = null;
 		Connection con = this.getConnection();
-		String sql = "Update event set empid = ?,eclocking = ?,eovertime = ?,ebigevent = ?,eaward = ? where eid = ?";
+		//String sql = "Update event set eclocking = ?,eovertime = ?,ebigevent = ?,eaward = ? where empid = ?";
+		String sql = "Update event set eclocking = ?,eovertime = ?,ebigevent = ?,eaward = ? where empid = ?";
 		try {
 			ps = con.prepareStatement(sql);
-			ps.setInt(1, t.geteMpid());
-			ps.setInt(2, t.geteClocking());
-			ps.setInt(3, t.geteOvertime());
-			ps.setString(4, t.geteBigevent());
-			ps.setInt(5, t.geteAward());
-			ps.setInt(6,t.geteId());
+			
+			//ps.setInt(1, e.geteMpid());
+			ps.setInt(1, e.geteClocking());
+			ps.setInt(2, e.geteOvertime());
+			ps.setString(3, e.geteBigevent());
+			ps.setInt(4, e.geteAward());
+			ps.setInt(5,e.geteMpid());
 			row = ps.executeUpdate();
-		} catch (SQLException e) {
+		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e1.printStackTrace();
 		}finally{
 			try {
 				ps.close();
 				con.close();
-			} catch (Exception e) {
+			} catch (Exception e1) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				e1.printStackTrace();
 			}
 		}
 		return row;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	//删除事项
 	public int DropEventEntity(int eId){
 		int row = 0;
@@ -199,6 +223,32 @@ public class EventDao extends JDBCUtil {
 		}
 		
 		return list1;
+		
+	}
+	//查询考勤表中非正常员工id及非正常事项
+	public List<CheckDetails> updateEventCheckdetails(){
+		List<CheckDetails> list = new ArrayList<CheckDetails>();
+		//int row = 0;
+		PreparedStatement ps = null;
+		Connection conn = this.getConnection();
+		ResultSet rs = null;
+		//String sql = "update event a,checkdetails b set a.ebigevent = b.cstatus where a.empid = b.empid";
+		String sql = "select empid,cstatus from checkdetails where cstatus !='正常' ";
+		try {
+			ps= conn.prepareStatement(sql);
+			rs=ps.executeQuery();
+			while(rs.next()){
+				CheckDetails cdd = new CheckDetails();
+				cdd.setEmpid(rs.getInt("empid"));
+				cdd.setCstatus(rs.getString("cstatus"));
+				list.add(cdd);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return list;
 		
 	}
 	
