@@ -10,13 +10,14 @@ public class EmployeeUi {
 	Scanner sc = new Scanner(System.in);
 	EmployeeEntity ee = new EmployeeEntity();
 	EmployeeControl ec = new EmployeeControl();
+	
 	public void EmployeeUiAll() {
 		// TODO Auto-generated constructor stub
 		String flag = "y";
 		do{
-			System.out.println("1.查看员工信息\t4.添加员工");
+			System.out.println("1.查看员工信息\t\t4.添加员工");
 			System.out.println("2.输入姓名查询员工信息\t5.删除员工");
-			System.out.println("3.修改员工信息\t6.返回上一级");
+			System.out.println("3.修改员工信息\t\t6.返回上一级");
 			System.out.println("请选择执行的操作:");
 			int id=0;
 			while (true) {
@@ -93,8 +94,10 @@ public class EmployeeUi {
 		if(id==2){
 			System.out.println("请输入要查询的员工姓名:");
 		}else if(id==3){
+			getAllEmployee();
 			System.out.println("请输入要修改的员工姓名:");
 		}else{
+			getAllEmployee();
 			System.out.println("请输入要删除的员工姓名:");
 		}
 		boolean flag = true;
@@ -114,7 +117,7 @@ public class EmployeeUi {
 		return flag;
 	}
 	//3修改员工信息
-		public void UpdateEmployee(int id){
+	public void UpdateEmployee(int id){
 			boolean isflag = getEmployeeByName(id);
 			if(isflag){	
 				System.out.println("请选择以上查询出的员工当中您要修改的员工编号:");
@@ -182,7 +185,7 @@ public class EmployeeUi {
 				getAllEmployee();
 			}
 		}
-	
+
 	//4新增员工信息
 	public void AddEmployee(){
 		System.out.println("请输入要新增的员工姓名:");
