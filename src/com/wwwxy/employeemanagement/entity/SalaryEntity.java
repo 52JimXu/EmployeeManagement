@@ -1,17 +1,16 @@
 package com.wwwxy.employeemanagement.entity;
 
-import java.sql.Date;
 
 public class SalaryEntity {
 	private int sId;
 	private int empId;
 	private int eId;
-	private int sSum;
-	private Date sTime;
+	private float sSum;
+	private String sTime;
 	public SalaryEntity(){
 		
 	}
-	public SalaryEntity(int sid, int empid, int eid, int ssum, Date stime) {
+	public SalaryEntity(int sid, int empid, int eid, float ssum,String stime) {
 		super();
 		this.sId = sid;
 		this.empId = empid;
@@ -37,16 +36,16 @@ public class SalaryEntity {
 	public void seteId(int eId) {
 		this.eId = eId;
 	}
-	public int getsSum() {
+	public float getsSum() {
 		return sSum;
 	}
-	public void setsSum(int sSum) {
+	public void setsSum(float sSum) {
 		this.sSum = sSum;
 	}
-	public Date getsTime() {
+	public String getsTime() {
 		return sTime;
 	}
-	public void setsTime(Date sTime) {
+	public void setsTime(String sTime) {
 		this.sTime = sTime;
 	}
 	

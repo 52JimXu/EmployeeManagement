@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.wwwxy.*;
 import com.wwwxy.employeemanagement.entity.EmployeeEntity;
 import com.wwwxy.employeemanagement.util.JDBCUtil;
 
