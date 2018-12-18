@@ -3,6 +3,7 @@ import java.sql.*;
 import java.util.*;
 
 import com.wwwxy.employeemanagement.entity.CheckDetails;
+import com.wwwxy.employeemanagement.ui.SignMethodUi;
 import com.wwwxy.employeemanagement.util.JDBCUtil;
 public class CheckDetailsDao extends JDBCUtil{
 	//查询所有考勤信息
@@ -97,6 +98,8 @@ public class CheckDetailsDao extends JDBCUtil{
 			PreparedStatement ps = null;
 			ResultSet rs = null;
 			String sql = "select * from checkdetails where empid = ?";
+			SignMethodUi smu=new SignMethodUi();
+			
 			try {
 				ps = con.prepareStatement(sql);
 				ps.setInt(1, empid);
@@ -106,7 +109,7 @@ public class CheckDetailsDao extends JDBCUtil{
 					cd.setCid(rs.getInt("cid"));
 					cd.setEmpid(rs.getInt("empid"));
 					cd.setCcheckin(rs.getTimestamp("ccheckin"));
-					cd.setCcheckin(rs.getTimestamp("ccheckout"));
+					cd.setCcheckout(rs.getTimestamp("ccheckout"));
 					cd.setCstatus(rs.getString("cstatus"));
 					cd.setCdate(rs.getString("cdate"));
 					list.add(cd);

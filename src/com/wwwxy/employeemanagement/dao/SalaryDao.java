@@ -16,6 +16,7 @@ public class SalaryDao {
 	private Connection con;
 	private PreparedStatement ps;
 	private ResultSet rs;
+	//查询所有
 	public List<SalaryEntity> GetAllSalary() {
 		JDBCUtil jdbc = new JDBCUtil();
 		con = jdbc.getConnection();
@@ -44,17 +45,20 @@ public class SalaryDao {
 			}
 		}
 	}
+	//增加
 	public int add(SalaryEntity se){
 		String sql = "insert into salary(eid,empid,ssum,stime)"
 				+ " values(?,?,?,?)";
 		int row = 0;
+		SalarySumDao ssd = new SalarySumDao();
+		float salary = ssd.SalarySum(se.getEmpId());
 		try{
 			con = new JDBCUtil().getConnection();
 			ps = con.prepareStatement(sql);
 			
 			ps.setInt(1,se.geteId());
 			ps.setInt(2,se.getEmpId());
-			ps.setFloat(3,se.getsSum());
+			ps.setFloat(3,salary);
 			ps.setString(4,se.getsTime().toString());
 			
 			row = ps.executeUpdate();
@@ -70,6 +74,7 @@ public class SalaryDao {
 		}
 		return row;
 	}
+	//删除
 	public int delete(int id){
 		String sql = "delete from salary where sid = "+id;
 		Connection con = null;
@@ -92,6 +97,7 @@ public class SalaryDao {
 		return row;
 		
 	}
+	//更新by eID
 	public int update (SalaryEntity se){
 		String sql = "update salary set eid=?,"
 				+ "empid=?,ssum=?,stime=? where sid =?";
@@ -121,6 +127,35 @@ public class SalaryDao {
 		}
 		return row;
 	}
+	//通过员工id更新工资总和
+	public int UpdateSalaryByEmpId(int empid,float ssum) {
+		String sql = "update salary set ssum=? where empid =?";
+		Connection con = null;
+		PreparedStatement ps = null;
+		int row=0;
+		try{
+			con = new JDBCUtil().getConnection();
+			ps = con.prepareStatement(sql);
+			
+			
+			ps.setFloat(1,ssum);
+			ps.setInt(2,empid);
+			
+			row = ps.executeUpdate();
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally{
+			try {
+				new JDBCUtil().close(con, ps, null);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return row;
+	
+	}
+	
+	//查询by eid
 	public List<SalaryEntity> GetSalaryById(int id) {
 		JDBCUtil jdbc = new JDBCUtil();
 		con = jdbc.getConnection();

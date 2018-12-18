@@ -15,9 +15,9 @@ public class EmployeeUi {
 		// TODO Auto-generated constructor stub
 		String flag = "y";
 		do{
-			System.out.println("1.查看员工信息\t4.添加员工");
+			System.out.println("1.查看员工信息\t\t4.添加员工");
 			System.out.println("2.输入姓名查询员工信息\t5.删除员工");
-			System.out.println("3.修改员工信息\t6.返回上一级");
+			System.out.println("3.修改员工信息\t\t6.返回上一级");
 			System.out.println("请选择执行的操作:");
 			int id=0;
 			while (true) {

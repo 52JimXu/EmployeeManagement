@@ -10,12 +10,13 @@ import com.wwwxy.employeemanagement.entity.LoginEntity;
 import com.wwwxy.employeemanagement.util.JDBCUtil;
 public class LoginDao {
 		//登录操作
-		public boolean login(String Lusername,String Lpassword){
+		public int login(String Lusername,String Lpassword){
 			LoginEntity le = new LoginEntity();
 			JDBCUtil jdbc = new JDBCUtil(); 
 			Connection con = jdbc.getConnection();
 			PreparedStatement ps = null;
 			ResultSet rs = null;
+			int id = 0;
 			String sql ="select * from login where username =? and password = ?";
 			try{
 				ps = con.prepareStatement(sql);
@@ -23,9 +24,7 @@ public class LoginDao {
 				ps.setString(2, Lpassword);
 				rs = ps.executeQuery();
 				if(rs.next()){
-					return true;
-				}else{
-					return false;
+					id = rs.getInt("id");
 				}
 			}catch(Exception e){
 				e.printStackTrace();
@@ -36,7 +35,7 @@ public class LoginDao {
 					e.printStackTrace();
 				}
 			}
-			return false;
+			return id;
 		}
 		//查询Login表中所有信息
 		public List<LoginEntity> getAllLogin(){
@@ -102,8 +101,8 @@ public class LoginDao {
 			}
 			return list;
 		}
-		//修改登录信息
-		public int updateLoginByEmpid(LoginEntity le){
+		//重置密码
+		public int updateLoginByEmpid(int empid){
 			int row = 0;
 			JDBCUtil jdbc = new JDBCUtil();
 			Connection con = jdbc.getConnection();
@@ -111,8 +110,7 @@ public class LoginDao {
 			String sql = "update login set password = 1234 where empid =?";
 			try {
 				ps = con.prepareStatement(sql);
-				ps.setString(1, le.getPassword());
-				ps.setInt(2, le.getEmpid());
+				ps.setInt(1, empid);
 				row = ps.executeUpdate();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -124,6 +122,57 @@ public class LoginDao {
 				}
 			}
 			return row;
+		}
+		//根据编号修改账号
+		public int updateLoginByEmpid1(int empid,String username){
+			int row =0;
+			JDBCUtil jdbc = new JDBCUtil();
+			Connection con = jdbc.getConnection();
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+			String sql = "update login set username=? where empid=?";
+			try {
+				ps = con.prepareStatement(sql);
+				ps.setString(1, username);
+				ps.setInt(2, empid);
+				
+				row = ps.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}finally{
+				try {
+					jdbc.close(con, ps,null);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			return row;
+		}
+		//根据id查找用户名
+		public String getLoginById(int id){
+			JDBCUtil jdbc = new JDBCUtil();
+			Connection con = jdbc.getConnection();
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+			String username = null;
+			String sql = "select username from login where id=?";
+			try {
+				ps = con.prepareStatement(sql);
+				ps.setInt(1, id);
+				rs = ps.executeQuery();
+				if(rs.next()){
+					username = rs.getString("username");
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}finally{
+				try {
+					jdbc.close(con, ps, null);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			return username;
 		}
 		//根据编号查找员工
 		public LoginEntity getLoginByEmpid(int empid){
@@ -154,13 +203,13 @@ public class LoginDao {
 			}
 			return le;
 		}
-		//新增登录信息
+		//新增信息
 		public int addLogin(LoginEntity le){
 			int row = 0;
 			JDBCUtil jdbc = new JDBCUtil();
 			Connection con = jdbc.getConnection();
 			PreparedStatement ps = null;
-			String sql = "insert into Login(username,empid) values(?,?)";
+			String sql = "insert into login(username,empid) values(?,?)";
 			try {
 				ps = con.prepareStatement(sql);
 				ps.setString(1, le.getUsername());
@@ -177,16 +226,16 @@ public class LoginDao {
 			}
 			return row;
 		}
-		//删除登录信息
-		public int delLoginByempId(int Lempid){
+		//根据编号删除信息
+		public int delLoginByempId(int empid){
 			int row = 0;
 			JDBCUtil jdbc = new JDBCUtil();
 			Connection con = jdbc.getConnection();
 			PreparedStatement ps = null;
-			String sql = "delete from Login where empid=?";
+			String sql = "delete from login where empid=?";
 			try {
 				ps = con.prepareStatement(sql);
-				ps.setInt(1, Lempid);
+				ps.setInt(1, empid);
 				row = ps.executeUpdate();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -198,5 +247,31 @@ public class LoginDao {
 				}
 			}	
 			return row;
+		}
+		//根据id获取admin的值
+		public int getAdminById(int id){
+			int admin =0;
+			JDBCUtil jdbc = new JDBCUtil();
+			Connection con = jdbc.getConnection();
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+			String sql = "select admin from login where id=?";
+			try {
+				ps = con.prepareStatement(sql);
+				ps.setInt(1, id);
+				rs = ps.executeQuery();
+				if(rs.next()){
+					admin = rs.getInt("admin");
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}finally{
+				try {
+					jdbc.close(con, ps, null);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			return admin;
 		}
 }
