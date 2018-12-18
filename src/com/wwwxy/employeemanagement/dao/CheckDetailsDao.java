@@ -106,7 +106,7 @@ public class CheckDetailsDao extends JDBCUtil{
 					cd.setCid(rs.getInt("cid"));
 					cd.setEmpid(rs.getInt("empid"));
 					cd.setCcheckin(rs.getTimestamp("ccheckin"));
-					cd.setCcheckin(rs.getTimestamp("ccheckout"));
+					cd.setCcheckout(rs.getTimestamp("ccheckout"));
 					cd.setCstatus(rs.getString("cstatus"));
 					cd.setCdate(rs.getString("cdate"));
 					list.add(cd);
