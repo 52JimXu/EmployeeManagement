@@ -4,12 +4,12 @@ import java.sql.Date;
 import java.sql.Timestamp;
 
 public class CheckDetails {
-private int cid;
-private int empid;
-private Timestamp ccheckin;
-private Timestamp ccheckout;
-private String cstatus;
-private String cdate;
+private int cid;//考勤ID
+private int empid;//员工ID
+private Timestamp ccheckin;//签到时间
+private Timestamp ccheckout;//签退时间
+private String cstatus;//考勤状态
+private String cdate;//考勤日期
 public CheckDetails(){
 	
 }
