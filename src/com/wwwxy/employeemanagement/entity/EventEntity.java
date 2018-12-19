@@ -10,7 +10,7 @@ public class EventEntity {
 	//事项加班时间
 	private int eOvertime;
 	//事项矿工次数
-	private String eBigevent;
+	private int eBigevent;
 	//工资评定
 	private int eAward;
 	public int geteId() {
@@ -37,11 +37,11 @@ public class EventEntity {
 	public void seteOvertime(int eOvertime) {
 		this.eOvertime = eOvertime;
 	}
-	public String geteBigevent() {
+	public int geteBigevent() {
 		return eBigevent;
 	}
-	public void seteBigevent(String eBigevent) {
-		this.eBigevent = eBigevent;
+	public void seteBigevent(int bigevent) {
+		this.eBigevent = bigevent;
 	}
 	public int geteAward() {
 		return eAward;
