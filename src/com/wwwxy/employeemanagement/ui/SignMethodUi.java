@@ -1,6 +1,7 @@
 package com.wwwxy.employeemanagement.ui;
 import java.sql.Timestamp;
 import java.text.DateFormat;
+import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -111,6 +112,48 @@ public class SignMethodUi {
 	             }
 	      }
 	    }
+	    public String Time(){
+	    	//判断员工是否早退，迟到，正常，加班，旷工
+	    	String state="";
+	    	String state1="正常";
+	    	String state2="正常";
+	    	String state3="正常";
+	    	DateFormat df=new SimpleDateFormat("HH:mm:ss");//获取时分秒
+	    	Date d=new Date();
+	    	try {
+				Date d1=df.parse("14:00:00");//规定签到时间
+				Date d2=df.parse(df.format(d));//员工签到，签退时间
+				Date d3=df.parse("20:00:00");//规定签退时间
+				int t1=(int) d1.getTime();
+				int t2=(int) d2.getTime();
+				int t3=(int) d3.getTime();
+				if (t2>t1) {
+					//迟到
+					long between=(t2-t1)/1000;//转化成秒
+					long hour=between%(24*3600)/3600;//转化为小时
+					long minute=between%3600/60;//转化为分
+					state1="迟到："+hour+"时"+minute+"分"+between+"秒"+"\t";
+				}
+				if (t2<t3) {
+					//早退
+					long between=(t2-t1)/1000;//转化成秒
+					long hour=between%(24*3600)/3600;//转化为小时
+					long minute=between%3600/60;//转化为分
+					state2="早退："+hour+"时"+minute+"分"+between+"秒"+"\t";
+				}
+				if (t2>t3) {
+					//加班
+					long between=(t2-t1)/1000;//转化成秒
+					long hour=between%(24*3600)/3600;//转化为小时
+					long minute=between%3600/60;//转化为分
+					state2="加班："+hour+"时"+minute+"分"+between+"秒"+"\t";
+				}
+			   
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+	    	return state;
+	    }
 	    public void Look(){
 	    	 System.out.println("请输入要查询的日期（yyyy-MM-dd）");
 	         Scanner sc = new Scanner(System.in);
@@ -119,7 +162,9 @@ public class SignMethodUi {
 	         for(CheckTime ct : listCheck){
 	             System.out.println(ct.getEmpid()+" 签到时间为:"+ct.getCcheckin()+
 	            		 " 签退时间为:"+ct.getCcheckout());
-	 
+	                String s = Time();
+					System.out.println(s);
 	    }
+	         
 	    }}
 
