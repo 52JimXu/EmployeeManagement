@@ -1,11 +1,12 @@
 package com.wwwxy.employeemanagement.ui;
 
-import java.security.spec.ECField;
+//import java.security.spec.ECField;
 import java.util.List;
 import java.util.Scanner;
 
 import com.wwwxy.employeemanagement.control.EventControl;
 import com.wwwxy.employeemanagement.dao.EventDao;
+import com.wwwxy.employeemanagement.entity.CheckDetails;
 import com.wwwxy.employeemanagement.entity.EventEntity;
 
 public class EventUi {
@@ -29,8 +30,8 @@ public class EventUi {
 		System.out.print("5.输入员工工号查询员工事项\n");
 		System.out.print("请输入编号：\n");
 		//输入事项编号
-		int a = input.nextInt();
-		switch (a){
+		int a1 = input.nextInt();
+		switch (a1){
 		case 1:
 			getAllEvent();
 			break;
@@ -61,15 +62,76 @@ public class EventUi {
 	//}
 	//查看所有员工事项
 	public static void getAllEvent(){
-
-		List<EventEntity> list = eve.getAllEvent();
-		System.out.println("事项排序\t\t员工编号\t\t迟到早退\t\t加班次数\t\t矿工次数\t\t工资情况");
-		for(EventEntity e:list){
-			System.out.println(e.geteId()+"\t"
-					+ "\t"+e.geteMpid()+"\t\t"+e.geteClocking()+"\t"
-							+ "\t"+e.geteBigevent()+"\t"
-									+ "\t"+e.geteOvertime()+"\t\t"+e.geteAward());
+		int Clocking = 0;
+		int Overtime = 0;
+		int Bigevent = 0;
+		int Award;
+		System.out.println("加载中请稍后.....");
+		String a = null;//设置一个判断标准
+		int c ;
+		//获取考勤表所有数据判断非正常员工事项及员工id
+		List<CheckDetails> list2 = eve.updateEventCheckdetails();
+		for(CheckDetails b:list2){
+			
+			//将考勤事件内容赋值给a
+			 a=b.getCstatus();
+			 //System.out.println(a);
+			 //将考勤事件员工编号赋值给c
+			 c=b.getEmpid();
+			// System.out.println(c);
+			 //获取事项表所有数据
+			 
+			 for(CheckDetails f:list2){
+					if(a !=null){
+						//输入id查询所有数据
+						List<EventEntity> list1 = eve.getEventById(c);
+						for(EventEntity list11:list1){
+							ee.seteMpid(0);
+							ee.seteClocking(0);
+							ee.seteOvertime(0);
+							ee.seteBigevent(0);
+							ee.seteAward(list11.geteAward());
+						}
+						//输入员工id获取该员工迟到早退，加班次数，旷工次数
+						List<EventEntity> list = eve.getAllEventEntity(c);
+						for(EventEntity e:list){
+						Clocking = e.geteClocking();//迟到早退
+						Bigevent = e.geteBigevent();//旷工
+						Overtime = e.geteOvertime();//加班
+						if(("早退".equals(a))||("迟到".equals(a)))
+						{	 
+							Clocking++;
+							//System.out.println(Clocking);
+							ee.seteClocking(Clocking);
+							break;
+						}
+						if("旷工".equals(a)){
+							Bigevent++;
+							//System.out.println(Bigevent);
+							ee.seteBigevent(Bigevent);
+							break;
+						}
+						if("加班".equals(a)){
+							Overtime++;
+							//System.out.println(Overtime);
+							ee.seteOvertime(Overtime);
+							break;
+						}
+						}
+							}
+					}
+			 //System.out.println("早退"+Clocking+"\t加班"+Overtime+"\t旷工"+Bigevent);
+			// Award = (Clocking*-50+Overtime*50+Bigevent*-100);
+			// ee.seteAward(Award);
+			 int row = eve.updateEventEntityById(ee);
 		}
+		
+		List<EventEntity> list = eve.getAllEvent();
+			System.out.println("事项排序\t\t员工编号\t\t迟到早退\t\t旷工\t\t加班次数\t\t工资情况");
+			for(EventEntity e:list){
+				System.out.println(e.geteId()+"\t\t"+e.geteMpid()+"\t\t"+e.geteClocking()+"\t\t"+e.geteBigevent()+"\t\t"+e.geteOvertime()+"\t\t"+e.geteAward());
+			}
+			
 	}
 	//新增一条员工事项
 	public static void addEvent(){
@@ -83,7 +145,7 @@ public class EventUi {
 		int c=input.nextInt();
 		
 		System.out.println("请输入员工旷工次数：");
-		String d=input.next();
+		int d=input.nextInt();
 		
 		System.out.print("请输入员工工资情况：");
 		int e=input.nextInt();
@@ -144,7 +206,7 @@ public class EventUi {
 			}
 			if("3".equals(str)){
 				System.out.println("请输入修改后的员工旷工次数：");
-				String d = input.next();
+				int d = input.nextInt();
 				ee.seteBigevent(d);
 			}
 			if("4".equals(str)){
