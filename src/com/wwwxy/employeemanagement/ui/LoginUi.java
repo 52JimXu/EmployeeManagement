@@ -132,11 +132,11 @@ public class LoginUi {
 	//根据账号查询员工信息
 	public void getLoginByUsername(int information){
 		if(information ==2){
-			System.out.println("请输入你要查询的员工账号：");
+			System.out.println("请输入你要查询的员工账号(用户名)：");
 		}else if(information ==3){
-			System.out.println("请输入你要修改的员工账号：");
+			System.out.println("请输入你要修改的员工账号(用户名)：");
 		}else{
-			System.out.println("请输入你要删除的员工账号：");
+			System.out.println("请输入你要删除的员工账号(用户名)：");
 		}
 		String username = input.next();
 		List<LoginEntity> list = lc.getLoginByUsername(username);
@@ -172,6 +172,7 @@ public class LoginUi {
 		System.out.println("1、管理员");
 		System.out.println("2、员工");
 		String key = input.next();
+		int row=0;
 		String[] strs = key.split("//.");
 		for(String str:strs){			
 			if("1".equals(str)){
@@ -179,6 +180,7 @@ public class LoginUi {
 				String username = input.next();
 				le.setUsername(username);
 				le.setAdmin(1);
+				row = new LoginDao().addLoginAdmin(le);
 			}
 			if("2".equals(str)){
 				System.out.println("请输入要添加的账号：");
@@ -188,9 +190,9 @@ public class LoginUi {
 				le.setUsername(username);
 				le.setAdmin(0);
 				le.setEmpid(empid);
+				row = new LoginDao().addLogin(le);
 			}
 		}
-		int row = lc.addLogin(le);
 		if(row>0){
 			System.out.println("添加成功。(默认密码是1234，请尽快修改你的密码!)");
 		}else{

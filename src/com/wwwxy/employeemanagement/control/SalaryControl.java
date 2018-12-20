@@ -1,8 +1,13 @@
 package com.wwwxy.employeemanagement.control;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+
+
 
 
 
@@ -38,12 +43,34 @@ public class SalaryControl {
 	//增加员工
 	public void AddSalary() {
 		System.out.println("请输入增加的员工编号:");
-		int empid = sc.nextInt();
-		int eid=new SalarySumDao().GetEventIdByEmpId(empid);
-		System.out.println("请输入增加的发工资时间:");
-		String stime = sc.next();
-		SalaryEntity se = new SalaryEntity(0, empid, eid, 0, stime);
-		int row = sd.add(se);
+		int empid=0;
+		int eid = 0;
+		int row = 0;
+		boolean flag =true;
+		while(flag){
+			try {
+				empid = sc.nextInt();
+				eid=new SalarySumDao().GetEventIdByEmpId(empid);
+				flag = false;
+				Calendar cal = Calendar.getInstance();
+				cal.add(Calendar.DATE, 30);
+				Date date = cal.getTime();
+				SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+				String time= sdf.format( date);
+				SalaryEntity se = new SalaryEntity(0, empid, eid, 0, time);
+				row= sd.add(se);
+			} catch (InputMismatchException e) {
+				System.out.println("输入有误,请重新输入:");
+				sc = new Scanner(System.in);
+				flag = true;
+				continue;
+			}catch (NullPointerException e) {
+				System.out.println("员工不存在,请重新输入:");
+				sc = new Scanner(System.in);
+				flag = true;
+				continue;
+			}
+		}
 		if(row>0){
 			System.out.println("操作成功");
 			GetAllSalary();
@@ -135,6 +162,7 @@ public class SalaryControl {
 			System.out.println("3、查询工资记录");
 			System.out.println("4、修改发工资时间");
 			System.out.println("5、更新工资记录");
+			System.out.println("6、退出工资管理");
 			int num =0;
 			try {
 				num=sc.nextInt();
@@ -160,15 +188,23 @@ public class SalaryControl {
 			case 5:
 				UpdateSalaryByEmpId();
 				break;
+			case 6:
+				chose = "n";
+				break;
 			default:
 				System.out.println("输入有误");
 				break;
 			}
-			System.out.println("是否继续操作？（请输入y/n）");
-			chose = sc.next();
-			while(!"n".equals(chose)&&!"y".equals(chose)){
-				System.out.println("输入有误，请输入y或者n");
+			if(!"n".equals(chose)){
+				System.out.println("是否继续操作？（请输入y/n）");
 				chose = sc.next();
+				while(!"n".equals(chose)&&!"y".equals(chose)){
+					System.out.println("输入有误，请输入y或者n");
+					chose = sc.next();
+				}
+			}else{
+				System.out.println("退出工资管理!");
+				return;
 			}
 		}
 		if("n".equals(chose)){

@@ -1,13 +1,19 @@
 package com.wwwxy.employeemanagement.ui;
 
 //import java.security.spec.ECField;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
 import com.wwwxy.employeemanagement.control.EventControl;
 import com.wwwxy.employeemanagement.dao.EventDao;
+import com.wwwxy.employeemanagement.dao.SalarySumDao;
 import com.wwwxy.employeemanagement.entity.CheckDetails;
 import com.wwwxy.employeemanagement.entity.EventEntity;
+import com.wwwxy.employeemanagement.entity.SalaryEntity;
 
 public class EventUi {
 	EventControl ec = new EventControl();
@@ -30,7 +36,14 @@ public class EventUi {
 		System.out.print("5.退出系统\n");
 		System.out.print("请输入编号：\n");
 		//输入事项编
-		int a1 = input.nextInt();
+		int a1 = 0;
+		try {
+			a1 = input.nextInt();
+		} catch (Exception e) {
+			System.out.println("输入有误,请输入整数");
+			input = new Scanner(System.in);
+			continue;
+		}
 		switch (a1){
 		case 1:
 			//getAllEvent2();
@@ -70,7 +83,7 @@ public class EventUi {
 		}
 		}
 		}while(x.equals("y"));
-		System.out.println("----------系统已退出----------");
+		System.out.println("----------事项管理已退出----------");
 	}
 	//查看所有员工事项
 	public static void getAllEvent(){
@@ -154,19 +167,66 @@ public class EventUi {
 	//新增一条员工事项
 	public static void addEvent(){
 		System.out.println("请输入员工编号：");
-		int a= input.nextInt();
+		int a=0;
 		
-		System.out.println("请输入迟到或早退：");
-		int b=input.nextInt();
+		boolean flag =true;
 		
-		System.out.println("请输入员工加班次数：");
-		int c=input.nextInt();
+		while(flag){
+			try {
+				a= input.nextInt();
+				flag = false;
+			} catch (InputMismatchException e) {
+				System.out.println("输入有误,请重新输入:");
+				input = new Scanner(System.in);
+				flag = true;
+				continue;
+			}
+		}
 		
-		System.out.println("请输入员工旷工次数：");
-		int d=input.nextInt();
+		System.out.println("请输入迟到或早退的次数：");
+		boolean flag1 =true;
+		int b = 0;
+		while(flag1){
+			try {
+				b= input.nextInt();
+				flag1 = false;
+			} catch (InputMismatchException e) {
+				System.out.println("输入有误,请重新输入:");
+				input = new Scanner(System.in);
+				flag1 = true;
+				continue;
+			}
+		}
+		System.out.println("请输入员工加班的次数：");
+		boolean flag2 =true;
+		int c = 0;
+		while(flag2){
+			try {
+				c= input.nextInt();
+				flag2 = false;
+			} catch (InputMismatchException e) {
+				System.out.println("输入有误,请重新输入:");
+				input = new Scanner(System.in);
+				flag2 = true;
+				continue;
+			}
+		}
+		System.out.println("请输入员工旷工的次数：");
+		boolean flag3 =true;
+		int d = 0;
+		while(flag3){
+			try {
+				d= input.nextInt();
+				flag3 = false;
+			} catch (InputMismatchException e) {
+				System.out.println("输入有误,请重新输入:");
+				input = new Scanner(System.in);
+				flag3 = true;
+				continue;
+			}
+		}
+		int e = c*50-(a+b)*50-100*d;
 		
-		System.out.print("请输入员工工资情况：");
-		int e=input.nextInt();
 		ee.seteMpid(a);
 		ee.seteClocking(b);
 		ee.seteOvertime(c);
@@ -178,6 +238,7 @@ public class EventUi {
 		}else{
 			System.out.print("新增失败");
 		}
+		
 	}
 	//删除一条员工事项
 	public static void DropEvent(){

@@ -13,6 +13,9 @@ import com.wwwxy.employeemanagement.entity.SalaryEntity;
 
 public class Manage {
 	public static void main(String[] args) {
+		new Manage().all();
+	}
+	public void all() {
 		// TODO Auto-generated method stub
 		Scanner input = new Scanner(System.in);
 		LoginUi lu = new LoginUi();
@@ -33,12 +36,17 @@ public class Manage {
 				System.out.println("7、退出管理系统");
 				System.out.println("请选择您要进行的操作(输入操作编号即可)：");
 				int information = 0;
-				try {
-					information=input.nextInt();
-				} catch (Exception e) {
-					System.out.println("输入有误,请输入整数");
-					input = new Scanner(System.in);
-					continue;
+				boolean flag = true;
+				while(flag){
+					try {
+						information=input.nextInt();
+						flag = false;
+					} catch (Exception e) {
+						System.out.println("输入有误,请输入整数:");
+						input = new Scanner(System.in);
+						flag = true;
+						continue;
+					}
 				}
 				switch(information){
 				case 1:
@@ -67,7 +75,7 @@ public class Manage {
 					break;
 				}
 				if(information !=7){
-					System.out.println("是否继续?（继续请输入y/退出输入n）：");
+					System.out.println("是否继续使用员工管理系统?（继续请输入y/退出输入n）：");
 					f = input.next();	
 				}	
 				while(!"n".equals(f)&&!"y".equals(f)){
@@ -99,7 +107,9 @@ public class Manage {
 				switch(information){
 				case 1:
 					
-					new SignMethodUi().checkin(empid);
+					new SignMethodUi().IsCheck(empid);
+					
+					
 					break;
 				case 2:
 					List<SalaryEntity> list =new SalaryDao().GetSalaryByEmpId(empid);

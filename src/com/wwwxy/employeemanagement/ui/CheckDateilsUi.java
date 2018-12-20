@@ -83,7 +83,7 @@ public class CheckDateilsUi {
 			int empid = input.nextInt();
 			List<CheckDetails> list = cdc.getCheckDetailsByempid(empid);
 			if(list.size()!=0){
-				System.out.println("考勤id\t员工id签到时间\t\t\t签退时间\t\t考勤状态\t考勤日期\t");
+				System.out.println("考勤id\t员工id\t签到时间\t\t签退时间\t\t考勤状态\t考勤日期\t");
 				for(CheckDetails cd:list){
 					System.out.println(cd.getCid()+"\t"+cd.getEmpid()+"\t"+cd.getCcheckin()+"\t"
 							+cd.getCcheckout()+"\t"+cd.getCstatus()+"\t"+cd.getCdate()+"\t");
