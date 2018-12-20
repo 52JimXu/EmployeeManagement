@@ -63,6 +63,7 @@ public class SignMethodUi {
 				new SignMethodUi().checkout(empid);
 				break;
 			default:
+				System.out.println("输入有误,请重新输入");
 				break;
 			}
 			System.out.println("是否继续操作y/n");
