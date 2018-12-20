@@ -18,7 +18,7 @@ public class EventUi {
 		// TODO Auto-generated method stub
 		//public void all(){
 			Scanner input = new Scanner(System.in);
-		String x="y";
+		String x = "y";
 		do{
 		boolean flag = true;
 		System.out.print("----------事项管理中心----------\n");
@@ -26,13 +26,15 @@ public class EventUi {
 		System.out.print("1.查询所有员工事项\n");
 		System.out.print("2.增加一条员工事项\n");
 		System.out.print("3.删除一条员工事项\n");
-		System.out.print("4.修改一条员工事项\n");
-		System.out.print("5.输入员工工号查询员工事项\n");
+		//System.out.print("4.修改一条员工事项\n");
+		System.out.print("4.输入员工工号查询员工事项\n");
+		System.out.print("5.退出系统\n");
 		System.out.print("请输入编号：\n");
-		//输入事项编号
+		//输入事项编
 		int a1 = input.nextInt();
 		switch (a1){
 		case 1:
+			//getAllEvent2();
 			getAllEvent();
 			break;
 		case 2:
@@ -42,11 +44,19 @@ public class EventUi {
 			getAllEvent();
 			DropEvent();
 			break;
-		case 4:
+		/*case 4:
 			UpdateEvent();
+			break;*/
+		case 4:
+			getEventbyeMpid();
 			break;
 		case 5:
-			getEventbyeMpid();
+			x = "n";
+			flag = false;
+			break;
+		case 6:
+			getAllEvent3();
+			getAllEvent2();
 			break;
 		default:
 			System.out.println("您输入方法不正确，请重新输入:");
@@ -55,41 +65,52 @@ public class EventUi {
 		if(flag){
 		System.out.println("是否继续请输入(y/n):");
 		x = input.next();
+		while(!x.equals("y")&&(!x.equals("n"))){
+			System.out.println("输入有误请重新输入(y/n):");
+			x = input.next();
+		}
 		}
 		}while(x.equals("y"));
 		System.out.println("----------系统已退出----------");
 	}
-	//}
 	//查看所有员工事项
 	public static void getAllEvent(){
+		List<EventEntity> list = eve.getAllEvent();
+			System.out.println("事项排序\t\t员工编号\t\t迟到早退\t\t加班次数\t\t旷工次数\t\t工资情况");
+			for(EventEntity e:list){
+				System.out.println(e.geteId()+"\t\t"+e.geteMpid()+"\t\t"+e.geteClocking()+"\t\t"+e.geteOvertime()+"\t\t"+e.geteBigevent()+"\t\t"+e.geteAward());
+			}
+			
+	}
+	//更新
+	public static void getAllEvent3(){
+		eve.UpdateEvent1();
+	}
+	public static void getAllEvent2(){
+		System.out.println("更新中请稍后...");
+		//eve.UpdateEvent1();
 		int Clocking = 0;
 		int Overtime = 0;
 		int Bigevent = 0;
 		int Award;
-		System.out.println("加载中请稍后.....");
 		String a = null;//设置一个判断标准
 		int c ;
 		//获取考勤表所有数据判断非正常员工事项及员工id
 		List<CheckDetails> list2 = eve.updateEventCheckdetails();
 		for(CheckDetails b:list2){
-			
 			//将考勤事件内容赋值给a
 			 a=b.getCstatus();
-			 //System.out.println(a);
 			 //将考勤事件员工编号赋值给c
 			 c=b.getEmpid();
-			// System.out.println(c);
 			 //获取事项表所有数据
-			 
-			 for(CheckDetails f:list2){
 					if(a !=null){
 						//输入id查询所有数据
 						List<EventEntity> list1 = eve.getEventById(c);
 						for(EventEntity list11:list1){
-							ee.seteMpid(0);
-							ee.seteClocking(0);
-							ee.seteOvertime(0);
-							ee.seteBigevent(0);
+							ee.seteMpid(list11.geteMpid());
+							ee.seteClocking(list11.geteClocking());
+							ee.seteOvertime(list11.geteOvertime());
+							ee.seteBigevent(list11.geteBigevent());
 							ee.seteAward(list11.geteAward());
 						}
 						//输入员工id获取该员工迟到早退，加班次数，旷工次数
@@ -101,38 +122,36 @@ public class EventUi {
 						if(("早退".equals(a))||("迟到".equals(a)))
 						{	 
 							Clocking++;
-							//System.out.println(Clocking);
 							ee.seteClocking(Clocking);
 							break;
 						}
 						if("旷工".equals(a)){
 							Bigevent++;
-							//System.out.println(Bigevent);
 							ee.seteBigevent(Bigevent);
 							break;
 						}
 						if("加班".equals(a)){
 							Overtime++;
-							//System.out.println(Overtime);
 							ee.seteOvertime(Overtime);
 							break;
 						}
+						if("迟到,加班".equals(a)){
+							Clocking++;
+							ee.seteClocking(Clocking);
+							Overtime++;
+							ee.seteOvertime(Overtime);
+							break;	
+						}
+						int row = eve.updateEventEntityById(ee);
 						}
 							}
-					}
-			 //System.out.println("早退"+Clocking+"\t加班"+Overtime+"\t旷工"+Bigevent);
-			// Award = (Clocking*-50+Overtime*50+Bigevent*-100);
-			// ee.seteAward(Award);
+			Award = (Clocking*-50+Overtime*50+Bigevent*-100);
+			ee.seteAward(Award);
 			 int row = eve.updateEventEntityById(ee);
 		}
-		
-		List<EventEntity> list = eve.getAllEvent();
-			System.out.println("事项排序\t\t员工编号\t\t迟到早退\t\t旷工\t\t加班次数\t\t工资情况");
-			for(EventEntity e:list){
-				System.out.println(e.geteId()+"\t\t"+e.geteMpid()+"\t\t"+e.geteClocking()+"\t\t"+e.geteBigevent()+"\t\t"+e.geteOvertime()+"\t\t"+e.geteAward());
-			}
-			
+		System.out.println("更新成功");
 	}
+
 	//新增一条员工事项
 	public static void addEvent(){
 		System.out.println("请输入员工编号：");
@@ -149,7 +168,6 @@ public class EventUi {
 		
 		System.out.print("请输入员工工资情况：");
 		int e=input.nextInt();
-		
 		ee.seteMpid(a);
 		ee.seteClocking(b);
 		ee.seteOvertime(c);
@@ -175,7 +193,6 @@ public class EventUi {
 	}
 	//修改事项
 	public static void UpdateEvent(){
-		//EventEntity t = eve.
 		System.out.println("请输入你要修改的员工ID:");
 		int empid = input.nextInt();
 		List<EventEntity> list = eve.getEventById(empid);

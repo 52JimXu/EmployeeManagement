@@ -143,7 +143,6 @@ public class EventDao extends JDBCUtil {
 				ps.close();
 				con.close();
 			} catch (Exception e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		}
@@ -268,6 +267,32 @@ public class EventDao extends JDBCUtil {
 			e.printStackTrace();
 		}
 		return list;
+		
+	}
+	//修改表指定字段数据
+//	public List<EventEntity> UpdateEvent1(){
+	public int UpdateEvent1(){
+		Connection con = this.getConnection();
+		PreparedStatement ps = null;
+		
+		String sql = "update event set eclocking = 0,eovertime = 0,ebigevent = 0,eaward = 0";
+		try {
+			ps = con.prepareStatement(sql);
+			ps.executeUpdate();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			try {
+				//rs.close();
+				ps.close();
+				con.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return 0;
 		
 	}
 	

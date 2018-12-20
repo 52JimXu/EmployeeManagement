@@ -56,6 +56,7 @@ public class EventTest {
 		for(EventEntity t1:list1){
 			System.out.println(t1.geteId()+"\t\t"+t1.geteMpid()+"\t\t"+t1.geteClocking()+"\t\t"+t1.geteBigevent()+"\t\t"+t1.geteAward());
 		}*/
+			System.out.println("请稍后---");
 		List<CheckDetails> list2 = eve.updateEventCheckdetails();
 		String a = null;
 		boolean flag = false;
@@ -69,33 +70,51 @@ public class EventTest {
 			 c=b.getEmpid();
 			 for(CheckDetails f:list2){
 					if(a !=null){
+						//输入员工id修改事项信息
 						List<EventEntity> list = eve.getEventById(c);
 						for(EventEntity list1:list){
-							ee.seteMpid(list1.geteMpid());
+							//ee.seteMpid(list1.geteMpid());
 							ee.seteClocking(list1.geteClocking());
 							ee.seteOvertime(list1.geteOvertime());
 							ee.seteBigevent(list1.geteBigevent());
 							ee.seteAward(list1.geteAward());
 						}
-						if("早退".equals(a))
-						{	Clocking++;
-							ee.seteClocking(Clocking);
-							break;
-						}
-						if("迟到".equals(a))
-						{	Clocking++;
+						//输入员工id获取员工各种事项次数
+						List<EventEntity> list1 = eve.getAllEventEntity(c);
+						for(EventEntity e:list1){
+						Clocking = e.geteClocking();//迟到早退
+						Bigevent = e.geteBigevent();//旷工
+						Overtime = e.geteOvertime();//加班
+						if(("早退".equals(a))||("迟到".equals(a)))
+						{	 
+							System.out.println("事项员工id"+c);
+							Clocking++;
+							//System.out.println(Clocking);
 							ee.seteClocking(Clocking);
 							break;
 						}
 						if("旷工".equals(a)){
+							System.out.println("事项员工id"+c);
 							Bigevent++;
+							//System.out.println(Bigevent);
 							ee.seteBigevent(Bigevent);
 							break;
 						}
 						if("加班".equals(a)){
+							System.out.println("事项员工id"+c);
 							Overtime++;
+							//System.out.println(Overtime);
 							ee.seteOvertime(Overtime);
 							break;
+						}
+						if("迟到,加班".equals(a)){
+							System.out.println("事项员工id"+c);
+							Clocking++;
+							ee.seteClocking(Clocking);
+							Overtime++;
+							ee.seteOvertime(Overtime);
+							break;	
+						}
 						}
 							}
 					}
