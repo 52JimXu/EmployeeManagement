@@ -14,9 +14,8 @@ public class EventUi {
 	static EventDao eve = new EventDao();
 	static EventEntity ee = new EventEntity();
 	static Scanner input = new Scanner(System.in);
-	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		//public void all(){
+		public void all(){
 			Scanner input = new Scanner(System.in);
 		String x = "y";
 		do{
