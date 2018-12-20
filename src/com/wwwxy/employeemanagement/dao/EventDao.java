@@ -28,7 +28,7 @@ public class EventDao extends JDBCUtil {
 				e.seteMpid(rs.getInt("eMpid"));
 				e.seteClocking(rs.getInt("eClocking"));
 				e.seteOvertime(rs.getInt("eOvertime"));
-				e.seteBigevent(rs.getString("eBigevent"));
+				e.seteBigevent(rs.getInt("eBigevent"));
 				e.seteAward(rs.getInt("eAward"));
 				list.add(e);
 			}
@@ -65,7 +65,7 @@ public class EventDao extends JDBCUtil {
 				e.seteMpid(rs.getInt("eMpid"));
 				e.seteClocking(rs.getInt("eClocking"));
 				e.seteOvertime(rs.getInt("eOvertime"));
-				e.seteBigevent(rs.getString("eBigevent"));
+				e.seteBigevent(rs.getInt("eBigevent"));
 				e.seteAward(rs.getInt("eAward"));
 				list.add(e);
 			}
@@ -96,7 +96,7 @@ public class EventDao extends JDBCUtil {
 			ps.setInt(1, e.geteMpid());
 			ps.setInt(2,e.geteClocking());
 			ps.setInt(3, e.geteOvertime());
-			ps.setString(4, e.geteBigevent());
+			ps.setInt(4, e.geteBigevent());
 			ps.setInt(5, e.geteAward());
 			row = ps.executeUpdate();
 		} catch (SQLException e1) {
@@ -126,17 +126,36 @@ public class EventDao extends JDBCUtil {
 		int row = 0;
 		PreparedStatement ps = null;
 		Connection con = this.getConnection();
-		//String sql = "Update event set eclocking = ?,eovertime = ?,ebigevent = ?,eaward = ? where empid = ?";
 		String sql = "Update event set eclocking = ?,eovertime = ?,ebigevent = ?,eaward = ? where empid = ?";
 		try {
 			ps = con.prepareStatement(sql);
-			
-			//ps.setInt(1, e.geteMpid());
 			ps.setInt(1, e.geteClocking());
 			ps.setInt(2, e.geteOvertime());
-			ps.setString(3, e.geteBigevent());
+			ps.setInt(3, e.geteBigevent());
 			ps.setInt(4, e.geteAward());
 			ps.setInt(5,e.geteMpid());
+			row = ps.executeUpdate();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}finally{
+			try {
+				ps.close();
+				con.close();
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		}
+		return row;
+	}
+	public int updateEventEntityById2(EventEntity e){
+		int row = 0;
+		PreparedStatement ps = null;
+		Connection con = this.getConnection();
+		String sql = "Update event set eclocking = eclocking+1,eovertime = eovertime+1,ebigevent = ebigevent+1 where empid = ?";
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setInt(1,e.geteMpid());
 			row = ps.executeUpdate();
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
@@ -152,7 +171,6 @@ public class EventDao extends JDBCUtil {
 		}
 		return row;
 	}
-	
 	
 	
 	
@@ -205,7 +223,7 @@ public class EventDao extends JDBCUtil {
 				e.seteMpid(rs.getInt("eMpid"));
 				e.seteClocking(rs.getInt("eClocking"));
 				e.seteOvertime(rs.getInt("eOvertime"));
-				e.seteBigevent(rs.getString("eBigevent"));
+				e.seteBigevent(rs.getInt("eBigevent"));
 				e.seteAward(rs.getInt("eAward"));
 				list1.add(e);
 			}
@@ -249,6 +267,32 @@ public class EventDao extends JDBCUtil {
 			e.printStackTrace();
 		}
 		return list;
+		
+	}
+	//修改表指定字段数据
+//	public List<EventEntity> UpdateEvent1(){
+	public int UpdateEvent1(){
+		Connection con = this.getConnection();
+		PreparedStatement ps = null;
+		
+		String sql = "update event set eclocking = 0,eovertime = 0,ebigevent = 0,eaward = 0";
+		try {
+			ps = con.prepareStatement(sql);
+			ps.executeUpdate();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			try {
+				//rs.close();
+				ps.close();
+				con.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return 0;
 		
 	}
 	

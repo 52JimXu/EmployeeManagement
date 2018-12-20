@@ -21,7 +21,7 @@ public class LoginControl {
 			LoginDao ld = new LoginDao();
 			id = ld.login(username, password);
 			if(id !=0){
-				String username1 = ld.getLoginById(id);
+				String username1 = ld.getLoginById5(id);
 				System.out.println("恭喜你，登录成功"+"\t"+username1);
 				break;
 			}else{
@@ -41,23 +41,35 @@ public class LoginControl {
 		return ld.getLoginByUsername(username);
 	}
 	//重置密码
-	public int updateLoginByEmpid(int empid){
-		return ld.updateLoginByEmpid(empid);
+	public int updateLoginById1(int id){
+		return ld.updateLoginById1(id);
 	}
-	//根据编号修改账号
-	public int updateLoginByEmpid1(int empid,String username){
-		return ld.updateLoginByEmpid1(empid, username);
+	//根据ID修改账号
+	public int updateLoginById2(int id,String username){
+		return ld.updateLoginById2(id, username);
 	}
 	//根据编号查找信息
-	public LoginEntity getLoginByEmpid(int empid){
-		return ld.getLoginByEmpid(empid);
+	public LoginEntity getLoginById4(int id){
+		return ld.getLoginById4(id);
 	}
+//	//根据id查找账号
+//	public string getLoginById5(int id){
+//		return ld.getLoginById5(username)
+//	}
 	//新增信息
 	public int addLogin(LoginEntity le){
 		return ld.addLogin(le);
 	}
 	//删除信息
-	public int delLoginByEmpid(int empid){
-		return ld.delLoginByempId(empid);
+	public int delLoginByEmpid3(int id){
+		return ld.delLoginById3(id);
+	}
+	//根据id查密码
+	public String getLoginById(int empid,String oldpassword){
+		return ld.getLoginById(empid,oldpassword);
+	}
+	//改密码
+	public int UpdateLoginPassword(String password,int id){
+		return ld.UpdateLoginPassword(password,id);
 	}
 }

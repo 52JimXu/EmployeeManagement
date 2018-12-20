@@ -185,4 +185,34 @@ public class SalaryDao {
 			}
 		}
 	}
+	//≤È—Øby empid
+		public List<SalaryEntity> GetSalaryByEmpId(int id) {
+			JDBCUtil jdbc = new JDBCUtil();
+			con = jdbc.getConnection();
+			try {
+				ps = con.prepareStatement("select * from salary where empid=?");
+				ps.setInt(1, id);
+				rs = ps.executeQuery();
+				List<SalaryEntity> list = new ArrayList<SalaryEntity>();
+				while(rs.next()){
+					SalaryEntity se = new SalaryEntity();
+					se.seteId(rs.getInt("eid"));
+					se.setEmpId(rs.getInt("empid"));
+					se.setsId(rs.getInt("sid"));
+					se.setsSum(rs.getInt("ssum"));
+					se.setsTime(rs.getString("stime"));
+					list.add(se);
+				}
+				return list;
+			} catch (SQLException e) {
+				System.out.println("sql¥ÌŒÛ");
+				return null;
+			}finally{
+				try {
+					jdbc.close(con, ps, rs);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 }
