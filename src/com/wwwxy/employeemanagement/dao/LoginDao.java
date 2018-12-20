@@ -171,6 +171,32 @@ public class LoginDao {
 			}
 			return username;
 		}
+		//根据id查找empid
+		public int getEmpidById(int id){
+			JDBCUtil jdbc = new JDBCUtil();
+			Connection con = jdbc.getConnection();
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+			int empid = 0;
+			String sql = "select empid from login where id=?";
+			try {
+				ps = con.prepareStatement(sql);
+				ps.setInt(1, id);
+				rs = ps.executeQuery();
+				if(rs.next()){
+					empid = rs.getInt("empid");
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}finally{
+				try {
+					jdbc.close(con, ps, null);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			return empid;
+		}
 		//根据ID查找该ID信息
 		public LoginEntity getLoginById4(int id){
 			LoginEntity le = new LoginEntity();

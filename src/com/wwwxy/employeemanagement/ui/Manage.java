@@ -1,8 +1,14 @@
 package com.wwwxy.employeemanagement.ui;
 
+import java.util.List;
 import java.util.Scanner;
 
 import com.wwwxy.employeemanagement.control.LoginControl;
+import com.wwwxy.employeemanagement.dao.EventDao;
+import com.wwwxy.employeemanagement.dao.LoginDao;
+import com.wwwxy.employeemanagement.dao.SalaryDao;
+import com.wwwxy.employeemanagement.entity.EventEntity;
+import com.wwwxy.employeemanagement.entity.SalaryEntity;
 
 
 public class Manage {
@@ -36,12 +42,16 @@ public class Manage {
 				}
 				switch(information){
 				case 1:
+					new EmployeeUi().EmployeeUiAll();
 					break;
 				case 2:
+					new CheckDateilsUi().all();
 					break;
 				case 3:
+					new EventUi().all();
 					break;
 				case 4:
+					new SalaryUi().Salary();
 					break;
 				case 5:
 					lu.Awesome();
@@ -78,6 +88,7 @@ public class Manage {
 				System.out.println("5、退出系统");
 				System.out.println("请选择您要进行的操作(输入操作编号即可)：");
 				int information = 0;
+				int empid = new LoginDao().getEmpidById(id);
 				try {
 					information = input.nextInt();
 				} catch (Exception e) {
@@ -87,10 +98,23 @@ public class Manage {
 				}
 				switch(information){
 				case 1:
+					
+					new SignMethodUi().checkin(empid);
 					break;
 				case 2:
+					List<SalaryEntity> list =new SalaryDao().GetSalaryByEmpId(empid);
+					System.out.println("工资编号\t员工ID\t事项ID\t工资总和\t发工资时间\t");
+					for(SalaryEntity list1:list){
+						System.out.println(list1.getsId()+"\t"+list1.getEmpId()+"\t"
+								+list1.geteId()+"\t"+list1.getsSum()+"\t"+list1.getsTime());
+					}
 					break;
 				case 3:
+					List<EventEntity> list2 = new EventDao().getEventById(empid);
+					System.out.println("事项排序\t\t员工编号\t\t迟到早退\t\t加班次数\t\t旷工次数\t\t工资情况");
+					for(EventEntity e:list2){
+						System.out.println(e.geteId()+"\t\t"+e.geteMpid()+"\t\t"+e.geteClocking()+"\t\t"+e.geteOvertime()+"\t\t"+e.geteBigevent()+"\t\t"+e.geteAward());
+					}
 					break;
 				case 4:
 					lu.UpdateLoginPassword(id);
