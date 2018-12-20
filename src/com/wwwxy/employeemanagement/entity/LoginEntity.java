@@ -7,9 +7,32 @@ public class LoginEntity {
 	private String username;
 	//管理员，员工密码
 	private String password;
+	//管理员，旧密码
+	private String oldpassword;
+	//员工编号
+	private int empid;
 	//管理员，员工
-	private int admin;
-	//属性的访问器
+	private int admin;	
+	//有参构造方法
+	public LoginEntity(int id, String username, String password,
+			String oldpassword, int empid, int admin) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.oldpassword = oldpassword;
+		this.empid = empid;
+		this.admin = admin;
+	}
+	
+	public LoginEntity(String username, String password) {
+		super();
+		this.username = username;
+		this.password = password;
+	}
+	public LoginEntity() {
+		
+	}
 	public int getId() {
 		return id;
 	}
@@ -28,11 +51,11 @@ public class LoginEntity {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public int getAdmin() {
-		return admin;
+	public String getOldpassword() {
+		return oldpassword;
 	}
-	public void setAdmin(int admin) {
-		this.admin = admin;
+	public void setOldpassword(String oldpassword) {
+		this.oldpassword = oldpassword;
 	}
 	public int getEmpid() {
 		return empid;
@@ -40,17 +63,11 @@ public class LoginEntity {
 	public void setEmpid(int empid) {
 		this.empid = empid;
 	}
-	//管理员，员工编号
-	private int empid;
-	public LoginEntity(int id, String username, String password, int admin, int empid) {
-		super();
-		this.id = id;
-		this.username = username;
-		this.password = password;
+	public int getAdmin() {
+		return admin;
+	}
+	public void setAdmin(int admin) {
 		this.admin = admin;
-		this.empid = empid;
 	}
-	public LoginEntity() {
-		
-	}
+
 }
