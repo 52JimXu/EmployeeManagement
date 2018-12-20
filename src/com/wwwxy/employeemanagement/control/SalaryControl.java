@@ -1,7 +1,10 @@
 package com.wwwxy.employeemanagement.control;
 
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+
+
 
 
 
@@ -92,10 +95,28 @@ public class SalaryControl {
 		
 		new SalaryDao().GetAllSalary();
 		GetAllSalary();
+		int empid=0 ;
 		System.out.println("请输入你要更新的员工ID：");
-		int empid = sc.nextInt();
-		float salary = new SalarySumDao().SalarySum(empid);
-		int row = sd.UpdateSalaryByEmpId(empid, salary);
+		boolean flag = true;
+		int row =0;
+		while(flag){
+			try {
+				empid = sc.nextInt();
+				flag = false;
+				float salary = new SalarySumDao().SalarySum(empid);
+				row = sd.UpdateSalaryByEmpId(empid, salary);
+			} catch (InputMismatchException e) {
+				System.out.println("输入有误,请重新输入");
+				sc = new Scanner(System.in);
+				flag = true;
+				continue;
+			}catch (NullPointerException e) {
+				System.out.println("不存在该员工，请重新输入");
+				sc = new Scanner(System.in);
+				flag = true;
+				continue;
+				}
+		}
 		if(row>0){
 			System.out.println("操作成功");
 			GetAllSalary();

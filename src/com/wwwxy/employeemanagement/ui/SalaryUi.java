@@ -7,4 +7,7 @@ public class SalaryUi {
 		SalaryControl sc = new SalaryControl();
 		sc.Salary();
 	}
+	public static void main(String[] args) {
+		new SalaryUi().Salary();
+	}
 }
