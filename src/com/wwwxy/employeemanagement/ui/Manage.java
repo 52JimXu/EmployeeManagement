@@ -105,11 +105,11 @@ public class Manage {
 				while(flag){
 					try {
 						information = input.nextInt();
-						flag = true;
-					} catch (Exception e) {
-						System.out.println("输入有误,请输入整数");
-						input = new Scanner(System.in);
 						flag = false;
+					} catch (Exception e) {
+						System.out.println("输入有误,请输入整数:");
+						input = new Scanner(System.in);
+						flag = true;
 						continue;
 					}
 				}
