@@ -13,6 +13,9 @@ import com.wwwxy.employeemanagement.entity.SalaryEntity;
 
 public class Manage {
 	public static void main(String[] args) {
+		new Manage().all();
+	}
+	public void all() {
 		// TODO Auto-generated method stub
 		Scanner input = new Scanner(System.in);
 		LoginUi lu = new LoginUi();
@@ -20,6 +23,10 @@ public class Manage {
 		int arr[] = lu.login();
 		int admin = arr[0];
 		int id = arr[1];
+		if(id==0){
+			System.out.println("对不起，已退出人力资源系统");
+			return;
+		}
 		if(admin !=0){
 			System.out.println("----------欢迎进入管理员系统----------");
 			String f = "y";
@@ -33,12 +40,17 @@ public class Manage {
 				System.out.println("7、退出管理系统");
 				System.out.println("请选择您要进行的操作(输入操作编号即可)：");
 				int information = 0;
-				try {
-					information=input.nextInt();
-				} catch (Exception e) {
-					System.out.println("输入有误,请输入整数");
-					input = new Scanner(System.in);
-					continue;
+				boolean flag = true;
+				while(flag){
+					try {
+						information=input.nextInt();
+						flag = false;
+					} catch (Exception e) {
+						System.out.println("输入有误,请输入整数:");
+						input = new Scanner(System.in);
+						flag = true;
+						continue;
+					}
 				}
 				switch(information){
 				case 1:
@@ -67,7 +79,7 @@ public class Manage {
 					break;
 				}
 				if(information !=7){
-					System.out.println("是否继续?（继续请输入y/退出输入n）：");
+					System.out.println("是否继续使用员工管理系统?（继续请输入y/退出输入n）：");
 					f = input.next();	
 				}	
 				while(!"n".equals(f)&&!"y".equals(f)){
@@ -89,17 +101,24 @@ public class Manage {
 				System.out.println("请选择您要进行的操作(输入操作编号即可)：");
 				int information = 0;
 				int empid = new LoginDao().getEmpidById(id);
-				try {
-					information = input.nextInt();
-				} catch (Exception e) {
-					System.out.println("输入有误,请输入整数");
-					input = new Scanner(System.in);
-					continue;
+				boolean flag = true;
+				while(flag){
+					try {
+						information = input.nextInt();
+						flag = false;
+					} catch (Exception e) {
+						System.out.println("输入有误,请输入整数:");
+						input = new Scanner(System.in);
+						flag = true;
+						continue;
+					}
 				}
 				switch(information){
 				case 1:
 					
-					new SignMethodUi().checkin(empid);
+					new SignMethodUi().IsCheck(empid);
+					
+					
 					break;
 				case 2:
 					List<SalaryEntity> list =new SalaryDao().GetSalaryByEmpId(empid);
@@ -111,9 +130,9 @@ public class Manage {
 					break;
 				case 3:
 					List<EventEntity> list2 = new EventDao().getEventById(empid);
-					System.out.println("事项排序\t\t员工编号\t\t迟到早退\t\t加班次数\t\t旷工次数\t\t工资情况");
+					System.out.println("事项排序\t员工编号\t迟到早退\t加班次数\t旷工次数\t工资情况");
 					for(EventEntity e:list2){
-						System.out.println(e.geteId()+"\t\t"+e.geteMpid()+"\t\t"+e.geteClocking()+"\t\t"+e.geteOvertime()+"\t\t"+e.geteBigevent()+"\t\t"+e.geteAward());
+						System.out.println(e.geteId()+"\t"+e.geteMpid()+"\t"+e.geteClocking()+"\t"+e.geteOvertime()+"\t"+e.geteBigevent()+"\t"+e.geteAward());
 					}
 					break;
 				case 4:
@@ -138,7 +157,7 @@ public class Manage {
 				System.out.println("对不起，已退出个人管理系统");
 			}
 		}else{
-			System.out.println("对不起，现已退出人力资源系统");
+			System.out.println("对不起，现已退出人力资源管理系统");
 		}
 	}
 

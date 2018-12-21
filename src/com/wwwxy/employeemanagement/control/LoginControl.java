@@ -29,6 +29,9 @@ public class LoginControl {
 				System.out.println("登录失败，您还有"+(3-count)+"次机会。");
 			}
 		}while(count<3);
+		if(count==3){
+			return 0;
+		}
 		return id;
 	}
 	LoginDao ld = new LoginDao();

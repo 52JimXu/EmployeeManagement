@@ -1,9 +1,11 @@
 package com.wwwxy.employeemanagement.ui;
 
+import java.io.InputStream;
 import java.util.List;
 import java.util.Scanner;
 
 import com.wwwxy.employeemanagement.control.EmployeeControl;
+import com.wwwxy.employeemanagement.dao.EmployeeDao;
 import com.wwwxy.employeemanagement.entity.EmployeeEntity;
 
 public class EmployeeUi {
@@ -17,13 +19,13 @@ public class EmployeeUi {
 		do{
 			System.out.println("1.查看员工信息\t\t4.添加员工");
 			System.out.println("2.输入姓名查询员工信息\t5.删除员工");
-			System.out.println("3.修改员工信息\t\t6.返回上一级");
+			System.out.println("3.修改员工信息\t\t6.退出系统");
 			System.out.println("请选择执行的操作:");
 			int id=0;
 			while (true) {
 				try {
-					String str = sc.next();
-					id = Integer.valueOf(str);
+					String str3 = sc.next();
+					id = Integer.valueOf(str3);
 					switch (id) {
 						case 1:
 							getAllEmployee();
@@ -68,7 +70,8 @@ public class EmployeeUi {
 						}
 						break;
 					}else {
-						System.out.println("退出管理!");
+						System.out.println("退出员工管理!");
+						return;
 					}
 					
 				} catch (Exception e) {
@@ -119,72 +122,92 @@ public class EmployeeUi {
 	//3修改员工信息
 	public void UpdateEmployee(int id){
 			boolean isflag = getEmployeeByName(id);
-			if(isflag){	
-				System.out.println("请选择以上查询出的员工当中您要修改的员工编号:");
-				int EmpId = sc.nextInt();
-				EmployeeEntity ee = ec.getEmployeeById(EmpId);
-				
-				System.out.println("请选择您要修改的信息，用逗号隔开：");
-				System.out.println("1、姓名\t5、工资");
-				System.out.println("2、性别\t6、邮箱");
-				System.out.println("3、年龄\t7、现居地址");
-				System.out.println("4、出生时间\t");
-				
-				String msg = sc.next();
-				String[] strs = msg.split(",");
-				for(String str:strs){
-					if("1".equals(str)){
-						System.out.println("请输入修改过后的姓名:");
-						String EmpName = sc.next();
-						ee.setEmpName(EmpName);
-						ec.UpdateEmployee(ee);
+			System.out.println("请选择以上查询出的员工当中您要修改的员工编号:");
+			while(isflag){
+				int EmpId = 0;
+				try {
+					EmpId = sc.nextInt();
+					EmployeeEntity ee1 = new EmployeeDao().getEmployeeById(EmpId);	
+					EmployeeEntity ee2 = ec.getEmployeeById(EmpId);
+					if(ee1.getEmpId() !=null){
+						
+						
+						System.out.println("请选择您要修改的信息，用逗号隔开：");
+						System.out.println("1、姓名\t5、工资");
+						System.out.println("2、性别\t6、邮箱");
+						System.out.println("3、年龄\t7、现居地址");
+						System.out.println("4、出生时间\t");
+						
+						String msg = sc.next();
+						String[] strs = msg.split(",");
+						for(String str:strs){
+							if("1".equals(str)){
+								System.out.println("请输入修改过后的姓名:");
+								String EmpName = sc.next();
+								ee.setEmpName(EmpName);
+								ec.UpdateEmployee(ee);
+							}
+							if("2".equals(str)){
+								System.out.println("请输入修改过后的性别:");
+								String EmpSex = sc.next();
+								ee.setEmpSex(EmpSex);
+								ec.UpdateEmployee(ee);
+							}
+							if("3".equals(str)){
+								System.out.println("请输入修改过后的年龄:");
+								int EmpAge = sc.nextInt();
+								ee.setEmpAge(EmpAge);
+								ec.UpdateEmployee(ee);
+							}
+							if("4".equals(str)){
+								System.out.println("请输入修改过后的出生时间:");
+								String EmpBirthday = sc.next();
+								ee.setEmpBirthday(EmpBirthday);
+								ec.UpdateEmployee(ee);
+							}
+							if("5".equals(str)){
+								System.out.println("请输入修改过后的工资:");
+								float EmpBasic = sc.nextFloat();
+								ee.setEmpBasic(EmpBasic); 
+								ec.UpdateEmployee(ee);
+							}
+							if("6".equals(str)){
+								System.out.println("请输入修改过后的邮箱:");
+								String EmpEmail = sc.next();
+								ee.setEmpEmail(EmpEmail);
+								ec.UpdateEmployee(ee);
+							}
+							if("7".equals(str)){
+								System.out.println("请输入修改过后的现居地址:");
+								String EmpAddress = sc.next();
+								ee.setEmpAddress(EmpAddress);
+								ec.UpdateEmployee(ee);
+							}
+							
+							if(!"1".equals(str)&&!"2".equals(str)&&!"3".equals(str)&&!"4".equals(str)&&!"5".equals(str)
+									&&!"6".equals(str)&&!"7".equals(str)){
+								System.out.println("请正确输入相应编号！");
+							}
+						}
+						
+						boolean flag = ec.UpdateEmployee(ee);
+						if(flag){
+								System.out.println("修改成功!");
+						}else{
+							System.out.println("修改失败!");
+						}
+						getAllEmployee();
+						return;
+					}else{
+						System.out.println("输入的员工不存在");
 					}
-					if("2".equals(str)){
-						System.out.println("请输入修改过后的性别:");
-						String EmpSex = sc.next();
-						ee.setEmpSex(EmpSex);
-						ec.UpdateEmployee(ee);
-					}
-					if("3".equals(str)){
-						System.out.println("请输入修改过后的年龄:");
-						int EmpAge = sc.nextInt();
-						ee.setEmpAge(EmpAge);
-						ec.UpdateEmployee(ee);
-					}
-					if("4".equals(str)){
-						System.out.println("请输入修改过后的出生时间:");
-						String EmpBirthday = sc.next();
-						ee.setEmpBirthday(EmpBirthday);
-						ec.UpdateEmployee(ee);
-					}
-					if("5".equals(str)){
-						System.out.println("请输入修改过后的工资:");
-						float EmpBasic = sc.nextFloat();
-						ee.setEmpBasic(EmpBasic);
-						ec.UpdateEmployee(ee);
-					}
-					if("6".equals(str)){
-						System.out.println("请输入修改过后的邮箱:");
-						String EmpEmail = sc.next();
-						ee.setEmpEmail(EmpEmail);
-						ec.UpdateEmployee(ee);
-					}
-					if("7".equals(str)){
-						System.out.println("请输入修改过后的现居地址:");
-						String EmpAddress = sc.next();
-						ee.setEmpAddress(EmpAddress);
-						ec.UpdateEmployee(ee);
-					}
+				} catch (Exception e) {
+					System.out.println("请输入上述查询列表中编号。");
+					sc =new Scanner(System.in);
+					continue;
 				}
-				boolean flag = ec.UpdateEmployee(ee);
-				if(flag){
-					System.out.println("修改成功!");
-				}else{
-					System.out.println("修改失败!");
-				}
-				getAllEmployee();
 			}
-		}
+	}
 
 	//4新增员工信息
 	public void AddEmployee(){

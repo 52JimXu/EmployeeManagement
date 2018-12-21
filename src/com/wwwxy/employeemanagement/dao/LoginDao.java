@@ -251,6 +251,31 @@ public class LoginDao {
 			}
 			return row;
 		}
+		
+		//新增管理员
+		public int addLoginAdmin(LoginEntity le){
+			int row = 0;
+			JDBCUtil jdbc = new JDBCUtil();
+			Connection con = jdbc.getConnection();
+			PreparedStatement ps = null;
+			String sql = "insert into login(username,id,admin) values(?,?,?)";
+			try {
+				ps = con.prepareStatement(sql);
+				ps.setString(1, le.getUsername());
+				ps.setInt(2, le.getId());
+				ps.setInt(3, le.getAdmin());
+				row = ps.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}finally{
+				try {
+					jdbc.close(con, ps, null);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			return row;
+		}
 		//根据ID删除信息
 		public int delLoginById3(int id){
 			int row = 0;
