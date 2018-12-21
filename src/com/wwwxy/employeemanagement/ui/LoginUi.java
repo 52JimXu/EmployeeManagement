@@ -71,6 +71,10 @@ public class LoginUi {
 				System.out.println("是否继续? (继续请输入y/退出输入n)");
 				f= input.next();
 			}
+			while(!"n".equals(f)&&!"y".equals(f)){
+				System.out.println("输入有误，请输入y或者n");
+				f = input.next();
+			}
 			if("n".equals(f)){
 				System.out.println("已退出当前这一级(如再次输入“n”，系统退出)！");
 			}
@@ -238,6 +242,9 @@ public class LoginUi {
 	
 	//修改密码
 	public void UpdateLoginPassword(int id){
+		int f=0;
+		int count =0;
+		do{
 		System.out.println("输入旧密码：");
 		String oldpassword = input.next();
 		if(oldpassword.equals(lc.getLoginById(id, oldpassword))){
@@ -255,8 +262,13 @@ public class LoginUi {
 				}
 			}
 		}else{
-			System.out.println("旧密码错误");
-		}
+			count++;
+			if(count==3){
+				return;
+			}
+			System.out.println("旧密码错误,你还有"+(3-count)+"次机会");
+			
+		}}while(count<=3);
 	}
 	
 	//重置密码
