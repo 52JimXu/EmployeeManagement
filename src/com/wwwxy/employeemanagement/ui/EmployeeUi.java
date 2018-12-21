@@ -1,10 +1,13 @@
 package com.wwwxy.employeemanagement.ui;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Scanner;
 
 import com.wwwxy.employeemanagement.control.EmployeeControl;
 import com.wwwxy.employeemanagement.dao.EmployeeDao;
+import com.wwwxy.employeemanagement.dao.EventDao;
 import com.wwwxy.employeemanagement.entity.EmployeeEntity;
 
 public class EmployeeUi {
@@ -16,9 +19,12 @@ public class EmployeeUi {
 		// TODO Auto-generated constructor stub
 		String flag = "y";
 		do{
-			System.out.println("1.查看员工信息\t\t4.添加员工");
-			System.out.println("2.输入姓名查询员工信息\t\t5.删除员工");
-			System.out.println("3.修改员工信息\t\t6.返回上一级");
+			System.out.println("1.查看员工信息");
+			System.out.println("2.输入姓名查询员工信息");
+			System.out.println("3.修改员工信息");
+			System.out.println("4.添加员工");
+			System.out.println("5.删除员工");
+			System.out.println("6.返回上一级");
 			System.out.println("请选择执行的操作:");
 			int id=0;
 			while (true) {
@@ -133,11 +139,13 @@ public class EmployeeUi {
 					EmployeeEntity ee=ec.getEmployeeById(EmpId);
 					if(ee1.getEmpId()!=null){
 						System.out.println("请选择您要修改的信息，用逗号隔开：");
-						System.out.println("1、姓名\t5、工资");
-						System.out.println("2、性别\t6、邮箱");
-						System.out.println("3、年龄\t7、现居地址");
-						System.out.println("4、出生时间\t");
-							
+						System.out.println("1、姓名");
+						System.out.println("2、性别");
+						System.out.println("3、年龄");
+						System.out.println("4、出生时间");
+						System.out.println("5、工资");
+						System.out.println("6、邮箱");
+						System.out.println("7、现居地址");
 						String msg = sc.next();
 						String[] strs = msg.split("[,， ]");
 						
@@ -181,7 +189,7 @@ public class EmployeeUi {
 										System.out.println("请输入修改过后的年龄:");
 										int EmpAge=0;
 										while(true){
-										try {
+											try {
 												String str1 = sc.next();
 												EmpAge=Integer.valueOf(str1);
 											}catch (Exception e) {
@@ -194,10 +202,21 @@ public class EmployeeUi {
 										}
 									}
 									if("4".equals(str)){
-										System.out.println("请输入修改过后的出生时间:");
-										String EmpBirthday = sc.next();
+										System.out.println("请输入修改过后的出生时间(格式:2000-01-01):");
+										SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+										String EmpBirthday = null;
+										while(true){
+											EmpBirthday= sc.next();
+											try {
+												sdf.parse(EmpBirthday);
+											} catch (ParseException e) {
+												System.out.println("格式有误");
+												continue;
+											}
 										ee.setEmpBirthday(EmpBirthday);
 										ec.UpdateEmployee(ee);
+										break;
+										}
 									}
 									if("5".equals(str)){
 										System.out.println("请输入修改过后的工资:");
@@ -277,19 +296,86 @@ public class EmployeeUi {
 	public void AddEmployee(){
 		System.out.println("请输入要新增的员工姓名:");
 		String EmpName = sc.next();
+		
 		System.out.println("性别:");
-		String EmpSex = sc.next();
+		System.out.println("1.男\t2.女");
+		String EmpSex =null;
+		boolean psex =false;
+		do{
+			String sexid = sc.next();
+			if("1".equals(sexid)){
+				EmpSex = "男";
+				break;
+			}else if("2".equals(sexid)){
+				EmpSex = "女";
+				break;
+			}else{
+				System.out.println("请重新正确选择:");
+				psex = true;
+			}
+		}while(psex);
+		
+		
 		System.out.println("年龄:");
-		int EmpAge = sc.nextInt();
+		int EmpAge=0;
+		while(true){
+		try {
+				String str1 = sc.next();
+				EmpAge=Integer.valueOf(str1);
+			}catch (Exception e) {
+				System.out.println("请正确输入年龄:");
+				continue;
+			}
+		break;
+		}
+		
 		System.out.println("出生年月:");
-		String EmpBirthday = sc.next();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String EmpBirthday = null;
+		while(true){
+			EmpBirthday= sc.next();
+			try {
+				sdf.parse(EmpBirthday);
+			} catch (ParseException e) {
+				System.out.println("格式有误");
+				continue;
+			}
+		break;
+		}
+		
 		System.out.println("当月工资:");
-		float EmpBasic = sc.nextFloat();
+		float EmpBasic=0;
+		while(true){
+			try {
+				String str2 = sc.next();
+				EmpBasic=Integer.valueOf(str2);
+			}catch (Exception e) {
+				System.out.println("请正确输入工资:");
+				continue;
+			}
+		break;
+		}
+		
+		
 		System.out.println("邮箱地址:");
-		String EmpEmail = sc.next();
+		String reg ="^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{3,}$";
+		String EmpEmail= null;
+		boolean flagem ;
+		do{
+			EmpEmail =sc.next();
+			if(EmpEmail.matches(reg)){
+				flagem = false;
+				break;
+			}else{
+				System.out.println("请正确输入邮箱:");
+				flagem = true;
+			}
+		}while(flagem);
+		
+		
 		System.out.println("现居地址:");
 		String EmpAddress = sc.next();
-		EmployeeEntity ee = new EmployeeEntity(null, EmpName,EmpSex, EmpAge, EmpBirthday, EmpBasic, EmpEmail, EmpAddress);
+		EmployeeEntity ee = new EmployeeEntity(EmpName,EmpSex, EmpAge, EmpBirthday, EmpBasic, EmpEmail, EmpAddress);
 		boolean flag = ec.AddEmployee(ee);
 		if(flag){
 			System.out.println("添加成功");

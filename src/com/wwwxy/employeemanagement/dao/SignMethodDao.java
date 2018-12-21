@@ -51,6 +51,8 @@ public class SignMethodDao {
 		new SalaryDao().UpdateSalaryByEmpId(empid, salary);
 		System.out.println("更新工资记录成功");
 	}
+	
+	//修改考勤后通过empid 更新事项
 	public int updateEventByEmpId(int empid,int a,int b,int c,int d){
 		int eaward =0;
 		int row = 0;

@@ -177,6 +177,7 @@ public class SalaryUi {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			flag = true;
 			String stimeString;
+			
 			while(flag){
 				stimeString = sc.next();
 				try {

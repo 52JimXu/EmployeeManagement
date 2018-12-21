@@ -5,8 +5,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+
+
+
 
 
 import com.wwwxy.employeemanagement.entity.SalaryEntity;
@@ -97,6 +103,27 @@ public class SalaryDao {
 		return row;
 		
 	}
+	
+	//通过empid删工资记录
+		public void deleteByempid(int id){
+			String sql = "delete from salary where empid = "+id;
+			Connection con = null;
+			PreparedStatement ps = null;
+			try{
+				con = new JDBCUtil().getConnection();
+				ps = con.prepareStatement(sql);
+				
+				ps.executeUpdate();
+			}catch(SQLException e){
+				e.printStackTrace();
+			}finally{
+				try {
+					new JDBCUtil().close(con, ps, null);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				};
+			}
+		}
 	//更新by eID
 	public int update (SalaryEntity se){
 		String sql = "update salary set eid=?,"
@@ -210,6 +237,34 @@ public class SalaryDao {
 			}finally{
 				try {
 					jdbc.close(con, ps, rs);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		//增加一条事项之后增加一条工资记录
+		public void AddSalaryAfterAddEvent(int empid) {
+			String sql = "insert into salary(eid,empid,ssum,stime)"
+					+ " values((select max(eid) from event),?,?,?)";
+			try{
+				con = new JDBCUtil().getConnection();
+				ps = con.prepareStatement(sql);
+				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				Calendar cal = Calendar.getInstance();
+				cal.add(Calendar.DATE, 30);
+				Date date = cal.getTime();
+				String nextdate = df.format(date);
+				ps.setInt(1,empid);
+				float salary = new SalarySumDao().SalarySum(empid);
+				ps.setFloat(2,salary);
+				ps.setString(3,nextdate);
+				ps.executeUpdate();
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			finally{
+				try {
+					new JDBCUtil().close(con, ps, null);
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}

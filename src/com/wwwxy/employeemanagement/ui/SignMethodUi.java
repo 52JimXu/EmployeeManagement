@@ -85,7 +85,4 @@ public class SignMethodUi {
 			System.out.println("已退出签到打卡");
 		}
 	}
-	public static void main(String[] args) {
-		new SignMethodUi().IsCheck(103);
-	}
 }

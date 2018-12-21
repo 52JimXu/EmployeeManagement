@@ -148,29 +148,7 @@ public class EventDao extends JDBCUtil {
 		}
 		return row;
 	}
-	public int updateEventEntityById2(EventEntity e){
-		int row = 0;
-		PreparedStatement ps = null;
-		Connection con = this.getConnection();
-		String sql = "Update event set eclocking = eclocking+1,eovertime = eovertime+1,ebigevent = ebigevent+1 where empid = ?";
-		try {
-			ps = con.prepareStatement(sql);
-			ps.setInt(1,e.geteMpid());
-			row = ps.executeUpdate();
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}finally{
-			try {
-				ps.close();
-				con.close();
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		}
-		return row;
-	}
+	
 	
 	
 	
@@ -205,6 +183,36 @@ public class EventDao extends JDBCUtil {
 		
 		return row;
 	}
+	
+	
+	
+	
+	//通过empid删除事项
+	public void DropEventEntityByempid(int empid){
+		PreparedStatement ps = null;
+		Connection con = this.getConnection();
+		String sql = "delete from event where empid = ?";
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, empid);
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			try {
+				ps.close();
+				con.close();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		new SalaryDao().deleteByempid(empid);
+		
+	}
+	
+	
 	//输入员工id查询事项
 	public List<EventEntity> getAllEventEntity(int eMpid){
 		List<EventEntity> list1 = new ArrayList<EventEntity>();
@@ -316,6 +324,9 @@ public class EventDao extends JDBCUtil {
 				e1.printStackTrace();
 			}
 		}
+		new SalaryDao().AddSalaryAfterAddEvent(empid);
 	}
+	
+	
 	
 }

@@ -381,21 +381,19 @@ public class CheckDetailsDao extends JDBCUtil{
 	}
 	//通过cid获取empid
 		public int GetEmpidByCid(int cid) {
-			int empid = 0;
 			Connection con = this.getConnection();
 			PreparedStatement ps = null;
 			ResultSet rs = null;
+			int flag =0;
 			String sql = "select empid from checkdetails where cid = ?";
 			try {
 				ps=con.prepareStatement(sql);
 				ps.setInt(1, cid);
 				rs = ps.executeQuery();
 				if(rs.next()){
-					empid = rs.getInt("empid");
+					flag = rs.getInt("empid");
 				}
-				if(!rs.next()){
-					return 0;
-				}
+
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}finally{
@@ -405,7 +403,7 @@ public class CheckDetailsDao extends JDBCUtil{
 					e.printStackTrace();
 				}
 			}
-			return empid;
+			return flag;
 		}
 	
 	

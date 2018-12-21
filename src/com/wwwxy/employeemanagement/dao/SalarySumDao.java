@@ -7,6 +7,7 @@ import com.wwwxy.employeemanagement.entity.EventEntity;
 
 
 public class SalarySumDao {
+	//更新工资
 	public float SalarySum(int empid) {
 		EventDao ed = new EventDao();
 		List<EventEntity> list=ed.getAllEventEntity(empid);
@@ -28,8 +29,5 @@ public class SalarySumDao {
 			eid=list1.geteId();
 		}
 		return eid;
-	}
-	public static void main(String[] args) {
-		new SalarySumDao().SalarySum(103);
 	}
 }

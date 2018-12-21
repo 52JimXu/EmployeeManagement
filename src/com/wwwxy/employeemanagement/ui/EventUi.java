@@ -189,24 +189,26 @@ public class EventUi {
 		EmployeeEntity empe = new EmployeeDao().getEmployeeById(a);
 		
 		flag = true;
+		boolean flag1 =true;
 		while(flag){
 			if(empe.getEmpAddress()==null){
-				System.out.println("输入的员工不存在，请重新输入");
-				boolean flag1 =true;
+				System.out.println("输入的员工不存在，请重新输入:");
+				
 				while(flag1){
 					try {
 						a= input.nextInt();
-						flag = false;
+						flag1 = false;
 					} catch (InputMismatchException e) {
 						System.out.println("输入有误,请重新输入:");
 						input = new Scanner(System.in);
-						flag = true;
+						flag1 = true;
 						continue;
 					}
 				}
 				empe = new EmployeeDao().getEmployeeById(a);
 				flag = true;
-			}else if(empe.getEmpId()==a){
+			}
+			else if(empe.getEmpId()==a){
 				System.out.println("此员工已存在事项");
 				return;
 			}else{
@@ -216,7 +218,8 @@ public class EventUi {
 		
 		
 		System.out.println("请输入迟到或早退的次数：");
-		boolean flag1 =true;
+		flag1 =true;
+		boolean flag2 =true;
 		int b = 0;
 		while(flag1){
 			try {
@@ -230,7 +233,6 @@ public class EventUi {
 			}
 		}
 		System.out.println("请输入员工加班的次数：");
-		boolean flag2 =true;
 		int c = 0;
 		while(flag2){
 			try {

@@ -107,7 +107,7 @@ public class CheckDateilsUi {
 				System.out.println("未查询到相应信息。");
 			}		
 		}		
-//删除考勤信息
+		//删除考勤信息
 	public void delCheckDetailsBycid(int action){
 		cdd.getCheckDetailsByempid(action);
 		getAllCheckDateils();
@@ -128,10 +128,12 @@ public class CheckDateilsUi {
 		}
 		empid = cdd.GetEmpidByCid(cid);
 		flag = true;
+		boolean flag1 = true;
 		while(flag){
 			if(empid==0){
+				
 				System.out.println("输入的考勤id不存在,请重新输入:");
-				boolean flag1 = true;
+				
 				while(flag1){
 					try {
 						cid = input.nextInt();
@@ -144,6 +146,7 @@ public class CheckDateilsUi {
 					}
 				}
 				empid = cdd.GetEmpidByCid(cid);
+				flag = true;
 				
 			}else{
 				flag = false;
@@ -178,10 +181,11 @@ public class CheckDateilsUi {
 		}
 		empid = cdd.GetEmpidByCid(cid);
 		flag = true;
+		boolean flag1 = true;
 		while(flag){
 			if(empid==0){
 				System.out.println("输入的考勤id不存在,请重新输入:");
-				boolean flag1 = true;
+				
 				while(flag1){
 					try {
 						cid = input.nextInt();
@@ -194,7 +198,7 @@ public class CheckDateilsUi {
 					}
 				}
 				empid = cdd.GetEmpidByCid(cid);
-				
+				flag = true;
 			}else{
 				flag = false;
 			}
@@ -204,6 +208,7 @@ public class CheckDateilsUi {
 		if(row>0){
 			System.out.println("修改成功");
 			//更新事项信息
+			
 			empid = cdd.GetEmpidByCid(cid);
 			SignMethodDao smd = new SignMethodDao();
 			smd.UpdateEventByEmpid(empid, cid);

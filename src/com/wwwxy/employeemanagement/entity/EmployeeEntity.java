@@ -33,6 +33,19 @@ public class EmployeeEntity {
 		EmpEmail = empEmail;
 		EmpAddress = empAddress;
 	}
+	public EmployeeEntity( String empName, String empSex,
+			Integer empAge, String empBirthday, Float empBasic,
+			String empEmail, String empAddress) {
+		super();
+	
+		EmpName = empName;
+		EmpSex = empSex;
+		EmpAge = empAge;
+		EmpBirthday = empBirthday;
+		EmpBasic = empBasic;
+		EmpEmail = empEmail;
+		EmpAddress = empAddress;
+	}
 	public Integer getEmpId() {
 		return EmpId;
 	}
