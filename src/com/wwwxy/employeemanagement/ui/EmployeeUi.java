@@ -1,6 +1,5 @@
 package com.wwwxy.employeemanagement.ui;
 
-import java.io.InputStream;
 import java.util.List;
 import java.util.Scanner;
 
@@ -18,8 +17,8 @@ public class EmployeeUi {
 		String flag = "y";
 		do{
 			System.out.println("1.查看员工信息\t\t4.添加员工");
-			System.out.println("2.输入姓名查询员工信息\t5.删除员工");
-			System.out.println("3.修改员工信息\t\t6.退出系统");
+			System.out.println("2.输入姓名查询员工信息\t\t5.删除员工");
+			System.out.println("3.修改员工信息\t\t6.返回上一级");
 			System.out.println("请选择执行的操作:");
 			int id=0;
 			while (true) {
@@ -59,6 +58,7 @@ public class EmployeeUi {
 							System.out.println("退出管理!");		
 						}
 						while(!"y".equals(flag)&&!"n".equals(flag)){
+							System.out.println("ERROR!qqq");
 							System.out.println("请重新输入(y/n):");
 							flag = sc.next();
 							if("y".equals(flag)){
@@ -70,12 +70,12 @@ public class EmployeeUi {
 						}
 						break;
 					}else {
-						System.out.println("退出员工管理!");
+						System.out.println("退出管理!");
 						return;
 					}
 					
 				} catch (Exception e) {
-					System.out.println("ERROR!");
+					System.out.println("ERROR!ssss");
 					System.out.println("请输入整数:");
 				}
 			}
@@ -118,96 +118,160 @@ public class EmployeeUi {
 			flag = false;
 		}
 		return flag;
-	}
+	}	
+		
 	//3修改员工信息
 	public void UpdateEmployee(int id){
 			boolean isflag = getEmployeeByName(id);
-			System.out.println("请选择以上查询出的员工当中您要修改的员工编号:");
-			while(isflag){
-				int EmpId = 0;
+			
+			while(isflag){	
+				System.out.println("请选择以上查询出的员工当中您要修改的员工编号:");
+				int EmpId=0;
 				try {
 					EmpId = sc.nextInt();
-					EmployeeEntity ee1 = new EmployeeDao().getEmployeeById(EmpId);	
-					EmployeeEntity ee2 = ec.getEmployeeById(EmpId);
-					if(ee1.getEmpId() !=null){
-						
-						
+					EmployeeEntity ee1 = new EmployeeDao().getEmployeeById(EmpId);
+					EmployeeEntity ee=ec.getEmployeeById(EmpId);
+					if(ee1.getEmpId()!=null){
 						System.out.println("请选择您要修改的信息，用逗号隔开：");
 						System.out.println("1、姓名\t5、工资");
 						System.out.println("2、性别\t6、邮箱");
 						System.out.println("3、年龄\t7、现居地址");
 						System.out.println("4、出生时间\t");
-						
-						String msg = sc.next();
-						String[] strs = msg.split(",");
-						for(String str:strs){
-							if("1".equals(str)){
-								System.out.println("请输入修改过后的姓名:");
-								String EmpName = sc.next();
-								ee.setEmpName(EmpName);
-								ec.UpdateEmployee(ee);
-							}
-							if("2".equals(str)){
-								System.out.println("请输入修改过后的性别:");
-								String EmpSex = sc.next();
-								ee.setEmpSex(EmpSex);
-								ec.UpdateEmployee(ee);
-							}
-							if("3".equals(str)){
-								System.out.println("请输入修改过后的年龄:");
-								int EmpAge = sc.nextInt();
-								ee.setEmpAge(EmpAge);
-								ec.UpdateEmployee(ee);
-							}
-							if("4".equals(str)){
-								System.out.println("请输入修改过后的出生时间:");
-								String EmpBirthday = sc.next();
-								ee.setEmpBirthday(EmpBirthday);
-								ec.UpdateEmployee(ee);
-							}
-							if("5".equals(str)){
-								System.out.println("请输入修改过后的工资:");
-								float EmpBasic = sc.nextFloat();
-								ee.setEmpBasic(EmpBasic); 
-								ec.UpdateEmployee(ee);
-							}
-							if("6".equals(str)){
-								System.out.println("请输入修改过后的邮箱:");
-								String EmpEmail = sc.next();
-								ee.setEmpEmail(EmpEmail);
-								ec.UpdateEmployee(ee);
-							}
-							if("7".equals(str)){
-								System.out.println("请输入修改过后的现居地址:");
-								String EmpAddress = sc.next();
-								ee.setEmpAddress(EmpAddress);
-								ec.UpdateEmployee(ee);
-							}
 							
-							if(!"1".equals(str)&&!"2".equals(str)&&!"3".equals(str)&&!"4".equals(str)&&!"5".equals(str)
-									&&!"6".equals(str)&&!"7".equals(str)){
-								System.out.println("请正确输入相应编号！");
+						String msg = sc.next();
+						String[] strs = msg.split("[,， ]");
+						
+						
+						boolean a =false;
+							
+						do{
+							for(String str:strs){
+								if("1".equals(str)||"2".equals(str)||"3".equals(str)||"4".equals(str)
+								||"5".equals(str)||"6".equals(str)||"7".equals(str)){
+									a =false;
+									if("1".equals(str)){
+										System.out.println("请输入修改过后的姓名:");
+										String EmpName = sc.next();
+										ee.setEmpName(EmpName);
+										ec.UpdateEmployee(ee);
+									}
+									if("2".equals(str)){
+										System.out.println("请选择修改过后的性别:");
+										System.out.println("1.男\t2.女");
+										
+										String EmpSex =null;
+										boolean psex =false;
+										do{
+											String sexid = sc.next();
+											if("1".equals(sexid)){
+												EmpSex = "男";
+												break;
+											}else if("2".equals(sexid)){
+												EmpSex = "女";
+												break;
+											}else{
+												System.out.println("请重新正确选择:");
+												psex = true;
+											}
+										}while(psex);
+										ee.setEmpSex(EmpSex);
+										ec.UpdateEmployee(ee);
+									}
+									if("3".equals(str)){
+										System.out.println("请输入修改过后的年龄:");
+										int EmpAge=0;
+										while(true){
+										try {
+												String str1 = sc.next();
+												EmpAge=Integer.valueOf(str1);
+											}catch (Exception e) {
+												System.out.println("请正确输入年龄:");
+												continue;
+											}
+										ee.setEmpAge(EmpAge);
+										ec.UpdateEmployee(ee);
+										break;
+										}
+									}
+									if("4".equals(str)){
+										System.out.println("请输入修改过后的出生时间:");
+										String EmpBirthday = sc.next();
+										ee.setEmpBirthday(EmpBirthday);
+										ec.UpdateEmployee(ee);
+									}
+									if("5".equals(str)){
+										System.out.println("请输入修改过后的工资:");
+										float EmpBasic=0;
+										while(true){
+										try {
+												String str2 = sc.next();
+												EmpBasic=Integer.valueOf(str2);
+											}catch (Exception e) {
+												System.out.println("请正确输入工资:");
+												continue;
+											}
+										ee.setEmpBasic(EmpBasic);
+										ec.UpdateEmployee(ee);
+										break;
+										}
+									}
+									if("6".equals(str)){
+										String reg ="^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{3,}$";
+										System.out.println("请输入修改过后的邮箱:");
+										String EmpEmail= null;
+										boolean flag ;
+										do{
+											EmpEmail =sc.next();
+											if(EmpEmail.matches(reg)){
+												flag = false;
+												break;
+											}else{
+												System.out.println("请正确输入邮箱:");
+												flag = true;
+											}
+										}while(flag);	
+										ee.setEmpEmail(EmpEmail);
+										ec.UpdateEmployee(ee);
+										break;
+										
+									}
+									if("7".equals(str)){
+										System.out.println("请输入修改过后的现居地址:");
+										String EmpAddress = sc.next();
+										ee.setEmpAddress(EmpAddress);
+										ec.UpdateEmployee(ee);
+									}
+							}else{
+								System.out.println("请正确输入相应编号:");
+								a = true;
+								msg = sc.next();
+								strs = msg.split("[,， ]");
 							}
-						}
+						}					
+					}while(a);
+							
+						
 						
 						boolean flag = ec.UpdateEmployee(ee);
 						if(flag){
-								System.out.println("修改成功!");
+							System.out.println("修改成功!");
 						}else{
 							System.out.println("修改失败!");
 						}
 						getAllEmployee();
 						return;
 					}else{
-						System.out.println("输入的员工不存在");
+						System.out.println("上述列表中不存在该ID员工！");
+						System.out.println("请重新输入员工编号:");
 					}
 				} catch (Exception e) {
-					System.out.println("请输入上述查询列表中编号。");
-					sc =new Scanner(System.in);
+					System.out.println("输入无匹配!");
+					sc = new Scanner(System.in);
 					continue;
 				}
+				
 			}
-	}
+		}
 
 	//4新增员工信息
 	public void AddEmployee(){
@@ -248,4 +312,5 @@ public class EmployeeUi {
 		}
 		getAllEmployee();
 	}
+	
 }
