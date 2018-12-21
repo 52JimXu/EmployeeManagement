@@ -130,13 +130,13 @@ public class LoginUi {
 		}
 	}
 	//根据账号查询员工信息
-	public void getLoginByUsername(int information){
+	public int getLoginByUsername(int information){
 		if(information ==2){
-			System.out.println("请输入你要查询的员工账号(用户名)：");
+			System.out.println("请输入你要查询的账号(用户名)：");
 		}else if(information ==3){
-			System.out.println("请输入你要修改的员工账号(用户名)：");
+			System.out.println("请输入你要修改的账号(用户名)：");
 		}else{
-			System.out.println("请输入你要删除的员工账号(用户名)：");
+			System.out.println("请输入你要删除的账号(用户名)：");
 		}
 		String username = input.next();
 		List<LoginEntity> list = lc.getLoginByUsername(username);
@@ -145,14 +145,19 @@ public class LoginUi {
 			for(LoginEntity le:list){
 				System.out.println(le.getId()+"\t"+le.getUsername()+"\t"+le.getEmpid());
 			}
+			return 1;
 		}else{
 			System.out.println("未查询到信息");
+			return 0;
 		}
 	}
 	//根据ID修改信息
 	public void updateLoginByEmpid1(int information){
-		getLoginByUsername(information);
-		System.out.println("请选择以上查询出的员工当中您要修改的员工ID：");
+		int flag = getLoginByUsername(information);
+		if(flag == 0){
+			return;
+		}
+		System.out.println("请选择以上查询出的信息当中您要修改的ID：");
 		int id = input.nextInt();
 		le = lc.getLoginById4(id);
 		System.out.println("请输入修改后的账号：");
@@ -201,9 +206,26 @@ public class LoginUi {
 	}
 	//删除信息
 	public void delLoginById3(int information){
-		getLoginByUsername(information);
+		int flag = getLoginByUsername(information);
+		if(flag == 0){
+			return;
+		}
 		System.out.println("以上查询出的员工当中您要删除的员工ID：");
-		int id = input.nextInt();
+		boolean a = true;
+		
+		int id=0;
+		while(a){
+			try {
+				id = input.nextInt();
+				a = false;
+			} catch (Exception e) {
+				System.out.println("输入有误,请输入整数");
+				input = new Scanner(System.in);
+				a=true;
+				continue;
+			}
+		}
+		
 		int row = lc.delLoginByEmpid3(id);
 		if(row>0){
 			System.out.println("删除成功。");

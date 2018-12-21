@@ -393,6 +393,9 @@ public class CheckDetailsDao extends JDBCUtil{
 				if(rs.next()){
 					empid = rs.getInt("empid");
 				}
+				if(!rs.next()){
+					return 0;
+				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}finally{

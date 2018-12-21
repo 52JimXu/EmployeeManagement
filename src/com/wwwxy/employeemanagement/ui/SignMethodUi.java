@@ -34,6 +34,8 @@ public class SignMethodUi {
 		if(row>0){
 			System.out.println("签退成功");
 			//更新事项信息
+			String cstatus = cdd.GetCheckStatus();
+			
 			new SignMethodDao().UpdateEventByEmpid(empid,0);
 		}else{
 			System.out.println("签退失败");
@@ -47,14 +49,18 @@ public class SignMethodUi {
 			System.out.println("请选择你要进行的操作");
 			System.out.println("1.签到");
 			System.out.println("2.签退");
-			try {
-				a = sc.nextInt();
-			} catch (Exception e) {
-				System.out.println("输入有误,请输入整数");
-				sc = new Scanner(System.in);
-				continue;
+			boolean flag = true;
+			while(flag){
+				try {
+					a = sc.nextInt();
+					flag = false;
+				} catch (Exception e) {
+					System.out.println("输入有误,请输入整数");
+					sc = new Scanner(System.in);
+					flag = true;
+					continue;
+				}
 			}
-			
 			switch (a) {
 			case 1:
 				new SignMethodUi().checkin(empid);

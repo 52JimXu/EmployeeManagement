@@ -23,24 +23,31 @@ public class CheckDateilsUi {
 			System.out.println("5、返回上一级");
 			System.out.println("请输入您要进行的管理操作：");
 			int action=0;
-			try {
-				action=input.nextInt();
-			} catch (Exception e) {
-				System.out.println("输入有误,请重新输入");
-				input = new Scanner(System.in);
-				if(action!=5){
-					System.out.println("是否继续（y/n）：");
-					f = input.next();}
-				continue;
+			boolean flag = true;
+			while(flag){
+				try {
+					if(action!=5){
+						action = input.nextInt();
+						}
+					flag = false;
+				} catch (Exception e) {
+					System.out.println("输入有误,请重新输入:");
+					input = new Scanner(System.in);
+					
+					flag = true;
+					continue;
+				}
 			}
 			switch(action){
 			case 1:
 				getAllCheckDateils();
 				break;
 			case 2:
+				System.out.println("请输入您要查询的考勤员工ID：");
  			    getCheckDateilsByempid(action);
 				break;
 			case 3:
+				System.out.println("请输入您要修改的考勤员工ID：");
 				updateCheckDetailsBYCid();
 				break;
 			case 4:
@@ -60,6 +67,9 @@ public class CheckDateilsUi {
 					f = input.next();
 				}
 			}
+			if(action == 5){
+				System.out.println("已退出考勤管理");
+			}
 		}while("y".equals(f));
 	}
 	//显示所有考勤信息
@@ -73,14 +83,19 @@ public class CheckDateilsUi {
 		}
 		//输入员工id查询考勤信息
 		public void getCheckDateilsByempid(int action){
-			if(action==2){
-				System.out.println("请输入您要查询的考勤员工ID：");
-			}else if(action==3){
-				System.out.println("请输入您要修改的考勤员工ID：");
-			}else{
-				System.out.println("请输入您要删除的考勤员工ID：");
+			boolean flag = true;
+			int empid=0;
+			while(flag){
+				try {
+					empid = input.nextInt();
+					flag = false;
+				} catch (Exception e) {
+					System.out.println("输入有误,请重新输入:");
+					input = new Scanner(System.in);
+					flag = true;
+					continue;
+				}
 			}
-			int empid = input.nextInt();
 			List<CheckDetails> list = cdc.getCheckDetailsByempid(empid);
 			if(list.size()!=0){
 				System.out.println("考勤id\t员工id\t签到时间\t\t签退时间\t\t考勤状态\t考勤日期\t");
@@ -95,12 +110,50 @@ public class CheckDateilsUi {
 //删除考勤信息
 	public void delCheckDetailsBycid(int action){
 		cdd.getCheckDetailsByempid(action);
+		getAllCheckDateils();
 		System.out.println("请选择你要删除的考勤id：");
-		int cid = input.nextInt();
+		boolean flag = true;
+		int cid=0;
+		int empid = 0;
+		while(flag){
+			try {
+				cid = input.nextInt();
+				flag = false;
+			} catch (Exception e) {
+				System.out.println("输入有误,请重新输入:");
+				input = new Scanner(System.in);
+				flag = true;
+				continue;
+			}
+		}
+		empid = cdd.GetEmpidByCid(cid);
+		flag = true;
+		while(flag){
+			if(empid==0){
+				System.out.println("输入的考勤id不存在,请重新输入:");
+				boolean flag1 = true;
+				while(flag1){
+					try {
+						cid = input.nextInt();
+						flag1 = false;
+					} catch (Exception e) {
+						System.out.println("输入有误,请重新输入:");
+						input = new Scanner(System.in);
+						flag1 = true;
+						continue;
+					}
+				}
+				empid = cdd.GetEmpidByCid(cid);
+				
+			}else{
+				flag = false;
+			}
+		}
+		
 		int row = cdc.delCheckDetailsBYCid(cid);
 		if(row>0){
 			System.out.println("删除成功。");
-			cdd.getAllCheckDetails();
+			getAllCheckDateils();
 		}else{
 			System.out.println("删除失败。");
 		}
@@ -110,8 +163,42 @@ public class CheckDateilsUi {
 		getAllCheckDateils();
 		int empid;
 		System.out.println("请输入你要修改的考勤id:");
-		int cid = input.nextInt();
-		
+		boolean flag = true;
+		int cid=0;
+		while(flag){
+			try {
+				cid = input.nextInt();
+				flag = false;
+			} catch (Exception e) {
+				System.out.println("输入有误,请重新输入:");
+				input = new Scanner(System.in);
+				flag = true;
+				continue;
+			}
+		}
+		empid = cdd.GetEmpidByCid(cid);
+		flag = true;
+		while(flag){
+			if(empid==0){
+				System.out.println("输入的考勤id不存在,请重新输入:");
+				boolean flag1 = true;
+				while(flag1){
+					try {
+						cid = input.nextInt();
+						flag1 = false;
+					} catch (Exception e) {
+						System.out.println("输入有误,请重新输入:");
+						input = new Scanner(System.in);
+						flag1 = true;
+						continue;
+					}
+				}
+				empid = cdd.GetEmpidByCid(cid);
+				
+			}else{
+				flag = false;
+			}
+		}
 			System.out.println("请选择修改后的签到状态：");
 			int row = to(cid);
 		if(row>0){
@@ -163,9 +250,6 @@ public class CheckDateilsUi {
 		}
 		int row = cdd.UpdateStatusById(cid, flag);
 		return row;
-	}
-	public static void main(String[] args) {
-		new CheckDateilsUi().all();
 	}
 	}
 	
