@@ -197,7 +197,7 @@ public class LoginDao {
 			}
 			return empid;
 		}
-		//根据ID查找该ID信息
+		//根据empID查找该ID信息
 		public LoginEntity getLoginById4(int id){
 			LoginEntity le = new LoginEntity();
 			JDBCUtil jdbc = new JDBCUtil();

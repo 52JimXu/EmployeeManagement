@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.wwwxy.employeemanagement.entity.EmployeeEntity;
+import com.wwwxy.employeemanagement.entity.LoginEntity;
 import com.wwwxy.employeemanagement.util.JDBCUtil;
 
 public class EmployeeDao extends JDBCUtil{
@@ -180,6 +181,10 @@ public class EmployeeDao extends JDBCUtil{
 				e.printStackTrace();
 			}
 			new EventDao().AddEventAfterAddEmp(GetMaxId());
+			EmployeeEntity ee1 =getEmployeeById(GetMaxId());
+			String username =ee1.getEmpName();
+			LoginEntity le = new LoginEntity(0, username, null, null, GetMaxId(), 0);
+			new LoginDao().addLogin(le);
 		}
 	}
 	
@@ -219,6 +224,7 @@ public class EmployeeDao extends JDBCUtil{
 		Connection con = getConnection();
 		PreparedStatement ps = null;
 		String sql = "delete from employee where empid=?";
+		new EventDao().DropEventEntityByempid(EmpId);
 		try {
 			ps = con.prepareStatement(sql);
 			ps.setInt(1, EmpId);
@@ -235,6 +241,8 @@ public class EmployeeDao extends JDBCUtil{
 				e.printStackTrace();
 			}
 		}
-		new EventDao().DropEventEntityByempid(EmpId);
+		LoginEntity le = new LoginDao().getLoginById4(EmpId);
+		int id = le.getId();
+		new LoginDao().delLoginById3(id);
 	}
 }

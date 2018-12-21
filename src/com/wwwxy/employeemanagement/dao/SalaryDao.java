@@ -4,15 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
-
-
 
 
 import com.wwwxy.employeemanagement.entity.SalaryEntity;
@@ -23,13 +19,13 @@ public class SalaryDao {
 	private PreparedStatement ps;
 	private ResultSet rs;
 	//²éÑ¯ËùÓÐ
-	public List<SalaryEntity> GetAllSalary() {
+	public List GetAllSalary() {
 		JDBCUtil jdbc = new JDBCUtil();
 		con = jdbc.getConnection();
 		try {
 			ps = con.prepareStatement("select * from salary");
 			rs = ps.executeQuery();
-			List<SalaryEntity> list = new ArrayList<SalaryEntity>();
+			List list = new ArrayList();
 			while(rs.next()){
 				SalaryEntity se = new SalaryEntity();
 				se.seteId(rs.getInt("eid"));
