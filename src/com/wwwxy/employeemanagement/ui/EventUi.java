@@ -1,12 +1,15 @@
 package com.wwwxy.employeemanagement.ui;
 
 //import java.security.spec.ECField;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
 import com.wwwxy.employeemanagement.control.EventControl;
+import com.wwwxy.employeemanagement.dao.EmployeeDao;
 import com.wwwxy.employeemanagement.dao.EventDao;
 import com.wwwxy.employeemanagement.entity.CheckDetails;
+import com.wwwxy.employeemanagement.entity.EmployeeEntity;
 import com.wwwxy.employeemanagement.entity.EventEntity;
 
 public class EventUi {
@@ -27,10 +30,23 @@ public class EventUi {
 		System.out.print("3.删除一条员工事项\n");
 		//System.out.print("4.修改一条员工事项\n");
 		System.out.print("4.输入员工工号查询员工事项\n");
-		System.out.print("5.退出系统\n");
+		System.out.print("5.更新所有事项情况\n");
+		System.out.print("6.退出系统\n");
 		System.out.print("请输入编号：\n");
 		//输入事项编
-		int a1 = input.nextInt();
+		int a1 = 0;
+		boolean f =true;
+		while(f){
+			try {
+				a1 = input.nextInt();
+				f = false;
+			} catch (Exception e) {
+				System.out.println("输入有误,请输入整数");
+				input = new Scanner(System.in);
+				f=true;
+				continue;
+			}
+		}
 		switch (a1){
 		case 1:
 			//getAllEvent2();
@@ -50,12 +66,12 @@ public class EventUi {
 			getEventbyeMpid();
 			break;
 		case 5:
-			x = "n";
-			flag = false;
-			break;
-		case 6:
 			getAllEvent3();
 			getAllEvent2();
+			break;
+		case 6:
+			x = "n";
+			flag = false;
 			break;
 		default:
 			System.out.println("您输入方法不正确，请重新输入:");
@@ -70,14 +86,14 @@ public class EventUi {
 		}
 		}
 		}while(x.equals("y"));
-		System.out.println("----------系统已退出----------");
+		System.out.println("----------事项管理已退出----------");
 	}
 	//查看所有员工事项
 	public static void getAllEvent(){
 		List<EventEntity> list = eve.getAllEvent();
-			System.out.println("事项排序\t\t员工编号\t\t迟到早退\t\t加班次数\t\t旷工次数\t\t工资情况");
+			System.out.println("事项排序\t员工编号\t迟到早退\t加班次数\t旷工次数\t工资情况");
 			for(EventEntity e:list){
-				System.out.println(e.geteId()+"\t\t"+e.geteMpid()+"\t\t"+e.geteClocking()+"\t\t"+e.geteOvertime()+"\t\t"+e.geteBigevent()+"\t\t"+e.geteAward());
+				System.out.println(e.geteId()+"\t"+e.geteMpid()+"\t"+e.geteClocking()+"\t"+e.geteOvertime()+"\t"+e.geteBigevent()+"\t"+e.geteAward());
 			}
 			
 	}
@@ -154,19 +170,95 @@ public class EventUi {
 	//新增一条员工事项
 	public static void addEvent(){
 		System.out.println("请输入员工编号：");
-		int a= input.nextInt();
+		int a=0;
 		
-		System.out.println("请输入迟到或早退：");
-		int b=input.nextInt();
+		boolean flag =true;
 		
-		System.out.println("请输入员工加班次数：");
-		int c=input.nextInt();
+		while(flag){
+			try {
+				a= input.nextInt();
+				flag = false;
+			} catch (InputMismatchException e) {
+				System.out.println("输入有误,请重新输入:");
+				input = new Scanner(System.in);
+				flag = true;
+				continue;
+			}
+		}
 		
-		System.out.println("请输入员工旷工次数：");
-		int d=input.nextInt();
+		EmployeeEntity empe = new EmployeeDao().getEmployeeById(a);
 		
-		System.out.print("请输入员工工资情况：");
-		int e=input.nextInt();
+		flag = true;
+		while(flag){
+			if(empe.getEmpAddress()==null){
+				System.out.println("输入的员工不存在，请重新输入");
+				boolean flag1 =true;
+				while(flag1){
+					try {
+						a= input.nextInt();
+						flag = false;
+					} catch (InputMismatchException e) {
+						System.out.println("输入有误,请重新输入:");
+						input = new Scanner(System.in);
+						flag = true;
+						continue;
+					}
+				}
+				empe = new EmployeeDao().getEmployeeById(a);
+				flag = true;
+			}else if(empe.getEmpId()==a){
+				System.out.println("此员工已存在事项");
+				return;
+			}else{
+				flag =false;
+			}
+		}
+		
+		
+		System.out.println("请输入迟到或早退的次数：");
+		boolean flag1 =true;
+		int b = 0;
+		while(flag1){
+			try {
+				b= input.nextInt();
+				flag1 = false;
+			} catch (InputMismatchException e) {
+				System.out.println("输入有误,请重新输入:");
+				input = new Scanner(System.in);
+				flag1 = true;
+				continue;
+			}
+		}
+		System.out.println("请输入员工加班的次数：");
+		boolean flag2 =true;
+		int c = 0;
+		while(flag2){
+			try {
+				c= input.nextInt();
+				flag2 = false;
+			} catch (InputMismatchException e) {
+				System.out.println("输入有误,请重新输入:");
+				input = new Scanner(System.in);
+				flag2 = true;
+				continue;
+			}
+		}
+		System.out.println("请输入员工旷工的次数：");
+		boolean flag3 =true;
+		int d = 0;
+		while(flag3){
+			try {
+				d= input.nextInt();
+				flag3 = false;
+			} catch (InputMismatchException e) {
+				System.out.println("输入有误,请重新输入:");
+				input = new Scanner(System.in);
+				flag3 = true;
+				continue;
+			}
+		}
+		int e = c*50-(a+b)*50-100*d;
+		
 		ee.seteMpid(a);
 		ee.seteClocking(b);
 		ee.seteOvertime(c);
@@ -178,11 +270,55 @@ public class EventUi {
 		}else{
 			System.out.print("新增失败");
 		}
+		
 	}
 	//删除一条员工事项
 	public static void DropEvent(){
-		System.out.println("请输入需要删除的事项编号：");
-		int a = input.nextInt();
+		System.out.println("请输入需要删除的员工编号：");
+		boolean flag = true;
+		int a=0;
+		while(flag){
+			try {
+				a = input.nextInt();
+				flag = false;
+			} catch (InputMismatchException e) {
+				System.out.println("输入有误,请重新输入:");
+				input = new Scanner(System.in);
+				flag = true;
+				continue;
+			}
+		}
+		EmployeeEntity empe = new EmployeeDao().getEmployeeById(a);
+		
+		flag = true;
+		while(flag){
+			if(empe.getEmpAddress()==null){
+				System.out.println("输入的员工不存在，请重新输入");
+				boolean flag1 =true;
+				while(flag1){
+					try {
+						a= input.nextInt();
+						flag = false;
+					} catch (InputMismatchException e) {
+						System.out.println("输入有误,请重新输入:");
+						input = new Scanner(System.in);
+						flag = true;
+						continue;
+					}
+				}
+				empe = new EmployeeDao().getEmployeeById(a);
+				flag = true;
+			}else if(empe.getEmpId()==a){
+				System.out.println("此员工已存在事项");
+				return;
+			}else{
+				flag =false;
+			}
+		}
+		
+		
+		
+		
 		int row = eve.DropEventEntity(a);
 		if(row != 0){
 			System.out.println("删除成功");
@@ -241,13 +377,32 @@ public class EventUi {
 				System.out.println("修改失败。");
 			}
 	}
-	public static void getEventbyeMpid(){
+	public void getEventbyeMpid(){
 		System.out.println("请输入要查询员工工号：");
-		int eMpid = input.nextInt();
+		boolean flag = true;
+		int eMpid = 0;
+		while(flag){
+			try {
+				eMpid = input.nextInt();
+				flag = false;
+			} catch (InputMismatchException e) {
+				System.out.println("输入有误,请重新输入:");
+				input = new Scanner(System.in);
+				flag = true;
+				continue;
+			}
+		}
+		
+		
 		List<EventEntity> list = eve.getAllEventEntity(eMpid);
-		System.out.println("事项排序\t\t员工编号\t\t迟到早退\t\t加班次数\t\t矿工次数\t\t工资情况");
+		
+		if(list.size()==0){
+			System.out.println("未查询到事项");
+			return;
+		}
+		System.out.println("事项排序\t员工编号\t迟到早退\t加班次数\t矿工次数\t工资情况");
 		for(EventEntity e:list){
-			System.out.println(e.geteId()+"\t\t"+e.geteMpid()+"\t\t"+e.geteClocking()+"\t\t"+e.geteBigevent()+"\t\t"+e.geteOvertime()+"\t\t"+e.geteAward());
+			System.out.println(e.geteId()+"\t"+e.geteMpid()+"\t"+e.geteClocking()+"\t"+e.geteBigevent()+"\t"+e.geteOvertime()+"\t"+e.geteAward());
 		}
 	}
 }

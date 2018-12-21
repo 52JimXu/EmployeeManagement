@@ -155,7 +155,7 @@ public class SalaryDao {
 	
 	}
 	
-	//≤È—Øby eid
+	//≤È—Øby sid
 	public List<SalaryEntity> GetSalaryById(int id) {
 		JDBCUtil jdbc = new JDBCUtil();
 		con = jdbc.getConnection();

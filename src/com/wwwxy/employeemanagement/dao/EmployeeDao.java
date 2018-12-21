@@ -64,7 +64,7 @@ public class EmployeeDao extends JDBCUtil{
 				EmployeeEntity ee = new EmployeeEntity();
 				ee.setEmpId(rs.getInt("empid"));
 				ee.setEmpName(rs.getString("empname"));
-				ee.setEmpSex(rs.getString("empage"));
+				ee.setEmpSex(rs.getString("empsex"));
 				ee.setEmpAge(rs.getInt("empage"));
 				ee.setEmpBirthday(rs.getString("empbirthday"));
 				ee.setEmpBasic(rs.getFloat("empbasic"));
@@ -131,7 +131,7 @@ public class EmployeeDao extends JDBCUtil{
 			while(rs.next()){
 				ee.setEmpId(rs.getInt("empid"));
 				ee.setEmpName(rs.getString("empname"));
-				ee.setEmpSex(rs.getString("empage"));
+				ee.setEmpSex(rs.getString("empsex"));
 				ee.setEmpAge(rs.getInt("empage"));
 				ee.setEmpBirthday(rs.getString("empbirthday"));
 				ee.setEmpBasic(rs.getFloat("empbasic"));

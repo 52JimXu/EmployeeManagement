@@ -291,9 +291,31 @@ public class EventDao extends JDBCUtil {
 				e.printStackTrace();
 			}
 		}
-		
 		return 0;
-		
+	}
+	//新增员工时增加一条事项记录
+	public void AddEventAfterAddEmp(int empid) {
+		PreparedStatement ps = null;
+		Connection con = this.getConnection();
+		String sql = "insert into event(empid,eclocking,eovertime,ebigevent,eaward) values(?,?,?,?,?)";
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, empid);
+			ps.setInt(2,0);
+			ps.setInt(3,0);
+			ps.setInt(4,0);
+			ps.setInt(5,0);
+			ps.executeUpdate();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}finally{
+			try {
+				ps.close();
+				con.close();
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		}
 	}
 	
 }
