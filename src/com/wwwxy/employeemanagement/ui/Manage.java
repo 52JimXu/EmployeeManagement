@@ -3,7 +3,6 @@ package com.wwwxy.employeemanagement.ui;
 import java.util.List;
 import java.util.Scanner;
 
-import com.wwwxy.employeemanagement.control.LoginControl;
 import com.wwwxy.employeemanagement.dao.EventDao;
 import com.wwwxy.employeemanagement.dao.LoginDao;
 import com.wwwxy.employeemanagement.dao.SalaryDao;
@@ -24,7 +23,7 @@ public class Manage {
 		int admin = arr[0];
 		int id = arr[1];
 		if(id==0){
-			System.out.println("对不起，已退出人力资源系统");
+			System.out.println("已退出人力资源系统");
 			return;
 		}
 		if(admin !=0){
@@ -87,7 +86,7 @@ public class Manage {
 					f = input.next();
 				}
 			}while("y".equals(f));{	
-				System.out.println("对不起，已退出管理员系统");
+				System.out.println("已退出管理员系统");
 			}
 		}else if(admin == 0){
 			System.out.println("----------欢迎进入个人管理系统----------");
@@ -146,7 +145,7 @@ public class Manage {
 					break;
 				}
 				if(information!=5){
-					System.out.println("是否继续? （继续请输入y/退出输入n）：");
+					System.out.println("是否继续?（继续请输入y/退出输入n）：");
 					f = input.next();
 				}					
 				while(!"n".equals(f)&&!"y".equals(f)){
@@ -154,10 +153,10 @@ public class Manage {
 					f = input.next();
 				}
 			}while("y".equals(f));{
-				System.out.println("对不起，已退出个人管理系统");
+				System.out.println("已退出个人管理系统");
 			}
 		}else{
-			System.out.println("对不起，现已退出人力资源管理系统");
+			System.out.println("现已退出人力资源管理系统");
 		}
 	}
 

@@ -76,13 +76,14 @@ public class LoginUi {
 				f = input.next();
 			}
 			if("n".equals(f)){
-				System.out.println("已退出当前这一级(如再次输入“n”，系统退出)！");
+				System.out.println("已退出当前这一级！");
 			}
 		}while("y".equals(f));
 	}
 	// 密码信息管理
 	public void Reset( int id){
 		String f = "y";
+		int flag = 1;
 		do{
 			System.out.println("1、重置密码");
 			System.out.println("2、修改密码");
@@ -101,7 +102,7 @@ public class LoginUi {
 				updateLoginById1();
 				break;
 			case 2:
-				UpdateLoginPassword(id);
+				flag =UpdateLoginPassword(id);
 				break;
 			case 3:
 				f="n";
@@ -111,11 +112,19 @@ public class LoginUi {
 				break;
 			}
 			if(information!=3){
-				System.out.println("是否继续?（继续请输入y/退出输入n）：");
-				f = input.next();
+				if(flag ==0){
+					System.out.println("修改密码失败，并已退出系统");
+					System.exit(-1);
+				}else{
+					System.out.println("是否继续?（继续请输入y/退出输入n）：");
+					f = input.next();
+				}
 			}			
 			if("n".equals(f)){
-				System.out.println("已退出当前这一级(如再次输入“ n ”，系统退出)！");
+				if(flag ==0){
+					return;
+				}
+				System.out.println("已退出当前这一级！");
 			}
 		}while("y".equals(f));
 	}
@@ -241,7 +250,7 @@ public class LoginUi {
 	
 	
 	//修改密码
-	public void UpdateLoginPassword(int id){
+	public int UpdateLoginPassword(int id){
 		int f=0;
 		int count =0;
 		do{
@@ -257,18 +266,20 @@ public class LoginUi {
 			}else{
 				if(row==1){
 					System.out.println("执行完毕");
+					break;
 				}else{
 					System.out.println("执行失败");
 				}
 			}
 		}else{
 			count++;
-			if(count==3){
-				return;
-			}
 			System.out.println("旧密码错误,你还有"+(3-count)+"次机会");
 			
-		}}while(count<=3);
+		}}while(count<3);
+		if(count==3){
+			return 0;
+		}
+		return 1;
 	}
 	
 	//重置密码

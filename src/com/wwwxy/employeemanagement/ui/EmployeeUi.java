@@ -64,24 +64,24 @@ public class EmployeeUi {
 							System.out.println("退出管理!");		
 						}
 						while(!"y".equals(flag)&&!"n".equals(flag)){
-							System.out.println("ERROR!qqq");
+							System.out.print("输入有误");
 							System.out.println("请重新输入(y/n):");
 							flag = sc.next();
 							if("y".equals(flag)){
 								break;
 							}
 							if("n".equals(flag)){
-								System.out.println("退出管理!");
+								System.out.println("已退出员工管理!");
 							}
 						}
 						break;
 					}else {
-						System.out.println("退出管理!");
+						System.out.println("已退出员工管理!");
 						return;
 					}
 					
 				} catch (Exception e) {
-					System.out.println("ERROR!ssss");
+					System.out.print("输入有误");
 					System.out.println("请输入整数:");
 				}
 			}

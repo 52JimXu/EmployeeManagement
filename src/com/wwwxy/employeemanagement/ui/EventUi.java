@@ -23,7 +23,6 @@ public class EventUi {
 		String x = "y";
 		do{
 		boolean flag = true;
-		System.out.print("----------事项管理中心----------\n");
 		System.out.print("请输入您要进行的操作(输入编号即可：)\n");
 		System.out.print("1.查询所有员工事项\n");
 		System.out.print("2.增加一条员工事项\n");
@@ -86,7 +85,7 @@ public class EventUi {
 		}
 		}
 		}while(x.equals("y"));
-		System.out.println("----------事项管理已退出----------");
+		System.out.println("已退出事项管理");
 	}
 	//查看所有员工事项
 	public static void getAllEvent(){

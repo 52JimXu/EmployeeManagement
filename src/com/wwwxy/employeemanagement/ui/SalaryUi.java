@@ -284,7 +284,7 @@ public class SalaryUi {
 						chose = sc.next();
 					}
 				}else{
-					System.out.println("退出工资管理!");
+					System.out.println("已退出工资记录管理!");
 					return;
 				}
 			}
