@@ -28,19 +28,19 @@ public class SignMethodControl {
 				//迟到
 				flag = "迟到";
 			}
-			if(t3>t1 && t4<t2){
-				flag = "迟到,早退";
-			}
 			if(t4<t2){
 				//早退
 				flag = "早退";
 			}
-			if(t3>t1 && t4>(t2+360000)){
-				flag = "迟到,加班";
+			if(t3>t1 && t4<t2){
+				flag = "迟到,早退";
 			}
 			if(t4>(t2+360000)){
 				//加班
-				flag += ",加班";
+				flag += "加班";
+			}
+			if(t3>t1 && t4>(t2+360000)){
+				flag = "迟到,加班";
 			}
 			if(t1>=t3 && t4>=t2 && t4<(t2+360000)){
 				flag = "正常";
